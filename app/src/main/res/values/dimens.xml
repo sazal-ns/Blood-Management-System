@@ -12,4 +12,6 @@
 
     <dimen name="nav_drawer_width">235dp</dimen>
     <dimen name="divider_height">1dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

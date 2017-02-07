@@ -26,6 +26,7 @@ public class ShowDialog extends AppCompatActivity{
         this.content = content;
         this.icon = icon;
 
+
         MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
                 .title(title)
                 .content(content)

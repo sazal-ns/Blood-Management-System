@@ -2,6 +2,7 @@ package com.rtsoftbd.siddiqui.bloodmanagmentsystem;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         preInIt();
 
@@ -75,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                JSONObject jsonObject = null;
+                JSONObject jsonObject;
 
                 try {
                     jsonObject = new JSONObject(response);
@@ -118,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("userName",userName);
                 params.put("password", password);
-                Log.d("info", userName+"->"+password);
+                //Log.d("info", userName+"->"+password);
 
                 return params;
             }

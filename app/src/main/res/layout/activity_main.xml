@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -8,10 +9,59 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.rtsoftbd.siddiqui.bloodmanagmentsystem.MainActivity">
+    tools:context="com.rtsoftbd.siddiqui.bloodmanagmentsystem.MainActivity"
+    android:background="@drawable/give_blood_bg">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_centerInParent="true">
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/groupSpinner"
+            android:layout_weight="5"
+            android:layout_gravity="center_vertical"
+            android:entries="@array/blood_group"/>
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/search"
+            android:id="@+id/searchBloodImageButton"
+            android:background="@drawable/md_transparent"
+            android:layout_weight="1"
+            android:contentDescription="@string/contentDescription"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="150dip"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp">
+
+        <Button
+            android:text="@string/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginButton"
+            android:background="@android:color/holo_red_light"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:text="@string/singUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/singUpButton"
+            android:background="#25373D"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="5dp"/>
+    </LinearLayout>
+
+
 </RelativeLayout>
