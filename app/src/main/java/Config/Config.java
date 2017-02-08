@@ -13,4 +13,8 @@ public final class Config {
     public static String URL_LOGIN = "http://api.rtsoftbd.us/blood/login.php";
 
     public static String URL_SEARCH_BLOOD= "http://api.rtsoftbd.us/blood/search.php";
+
+    public static String URL_REGISTRATION= "http://api.rtsoftbd.us/blood/reg.php";
+
+    public static String URL_UPDATE_USER_INFO= "http://api.rtsoftbd.us/blood/updateUserInfo.php";
 }

@@ -1,5 +1,7 @@
 package com.rtsoftbd.siddiqui.bloodmanagmentsystem;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
@@ -30,7 +32,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText userNameEditText, passwordEditText;
     private Button singInButton, singUpButton;
-    private CheckBox rememberMeCheckBox;
+
+    private ProgressDialog pDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +48,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
    private void preInIt(){
+
+       pDialog = new ProgressDialog(this);
+       pDialog.setCancelable(false);
+
        userNameEditText = (EditText) findViewById(R.id.userNameEditText);
        passwordEditText = (EditText) findViewById(R.id.passwordEditText);
 
        singInButton = (Button) findViewById(R.id.singInButton);
        singUpButton = (Button) findViewById(R.id.singUpButton);
 
-       rememberMeCheckBox = (CheckBox) findViewById(R.id.rememberMeCheckBox);
 
        inIt();
     }
@@ -68,18 +75,22 @@ public class LoginActivity extends AppCompatActivity {
                     doLogin(userNameEditText.getText().toString().trim(), passwordEditText.getText().toString().trim());
                     break;
                 case R.id.singUpButton:
+                    startActivity(new Intent(LoginActivity.this, SingUpActivity.class));
                     break;
             }
         }
     };
 
     private void doLogin(final String userName, final String password){
+        pDialog.setMessage("Logging in...");
+        showDialog();
+
         StringRequest request = new StringRequest(Request.Method.POST, Config.URL_LOGIN, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 JSONObject jsonObject;
-
+                hideDialog();
                 try {
                     jsonObject = new JSONObject(response);
                     Log.e("response", response);
@@ -92,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                         User.setUsername(object.getString("username"));
                         User.setPassword(object.getString("password"));
                         User.setUser_type(object.getString("user_type"));
-                        User.setMobile(object.getString("mobile"));
+                        User.setMobile("0"+object.getString("mobile"));
                         User.setArea(object.getString("area"));
                         User.setThana(object.getString("thana"));
                         User.setUnion(object.getString("union"));
@@ -100,12 +111,16 @@ public class LoginActivity extends AppCompatActivity {
                         User.setAge(object.getString("age"));
                         User.setBloodg(object.getString("bloodg"));
 
-                        Log.d("Loging",object.toString());
+                        Intent intent = new Intent(LoginActivity.this, UserProfile.class);
+                        startActivity(intent);
+                        finish();
 
                     }else{
+                        hideDialog();
                         new ShowDialog(LoginActivity.this, "Error", jsonObject.getString("error_msg"),getResources().getDrawable(R.drawable.ic_error_red_24dp));
                     }
                 } catch (JSONException e) {
+                    hideDialog();
                     e.printStackTrace();
                 }
 
@@ -113,6 +128,7 @@ public class LoginActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                hideDialog();
                 Log.e("doLogin onErrorResponse", error.toString());
             }
         }){
@@ -128,5 +144,15 @@ public class LoginActivity extends AppCompatActivity {
         };
 
         Volley.newRequestQueue(this).add(request);
+    }
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 }

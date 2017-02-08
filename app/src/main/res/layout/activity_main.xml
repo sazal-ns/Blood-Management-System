@@ -20,11 +20,14 @@
 
         <Spinner
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dip"
             android:id="@+id/groupSpinner"
-            android:layout_weight="5"
+            android:layout_weight="3"
             android:layout_gravity="center_vertical"
-            android:entries="@array/blood_group"/>
+            android:entries="@array/blood_group"
+            android:background="#7BB0A6"
+
+            android:textAlignment="center"/>
 
         <ImageButton
             android:layout_width="0dp"

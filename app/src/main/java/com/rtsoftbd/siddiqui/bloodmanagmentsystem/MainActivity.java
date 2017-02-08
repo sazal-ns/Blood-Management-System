@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     break;
                 case R.id.singUpButton:
+                    startActivity(new Intent(MainActivity.this, SingUpActivity.class));
                     break;
                 case R.id.searchBloodImageButton:
                     Intent intent = new Intent(MainActivity.this, DonorActivity.class);
