@@ -40,5 +40,12 @@
     <!--Profile-->
     <string name="updateInformation">Update Information</string>
 
+    <!--connection-->
+    <string name="error">Error!!!</string>
+    <string name="connectionError">No Internet Connection Found :(</string>
+    <string name="positive">Enable</string>
+    <string name="negative">Exit</string>
+    <string name="natural">Try Again</string>
+
     
 </resources>

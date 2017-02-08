@@ -6,7 +6,11 @@
 package com.rtsoftbd.siddiqui.bloodmanagmentsystem;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
@@ -16,6 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -30,6 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import config.Config;
+import helper.ConnectionDetect;
 import helper.ShowDialog;
 import models.User;
 
@@ -41,14 +48,16 @@ public class SingUpActivity extends AppCompatActivity {
     private Button singUpButtonD;
 
     private ProgressDialog pDialog;
-
+    ConnectionDetect cd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sing_up);
-
+        cd = new ConnectionDetect(this);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-
+        if (!cd.isConnected()) {
+            showNetDisabledAlertToUser(this);
+        }
         preInIt();
     }
 
@@ -80,7 +89,9 @@ public class SingUpActivity extends AppCompatActivity {
                         ageEditText.getText().toString().isEmpty())
                     new ShowDialog(SingUpActivity.this, "Error!!!", "Please Provide All Information", getResources().getDrawable(R.drawable.ic_error_red_24dp));
 
-                else
+                else if (!cd.isConnected()) {
+                    showNetDisabledAlertToUser(SingUpActivity.this);
+                }else
                 doRegistration(donorNameEditText.getText().toString().trim(), userNameEditText.getText().toString().trim(),
                         passwordEditText.getText().toString().trim(), mobileEditText.getText().toString().trim(),
                         areaEditText.getText().toString().trim(),thanaEditText.getText().toString().trim(),
@@ -161,6 +172,52 @@ public class SingUpActivity extends AppCompatActivity {
         };
 
         Volley.newRequestQueue(this).add(request);
+    }
+
+    public void showNetDisabledAlertToUser(final Context context){
+
+        Drawable error_icon = getResources().getDrawable(R.drawable.ic_error_red_24dp);
+
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
+                .title(R.string.error)
+                .content(R.string.connectionError)
+                .positiveText(R.string.positive)
+                .positiveColor(Color.parseColor("#6dc390"))
+                .negativeText(R.string.negative)
+                .negativeColor(Color.RED)
+                .neutralText(R.string.natural)
+                .neutralColor(Color.BLUE)
+                .icon(error_icon)
+                .cancelable(false)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                        System.exit(0);
+                    }
+                })
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+                })
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        Intent dialogIntent = new Intent(android.provider.Settings.ACTION_SETTINGS);
+                        context.startActivity(dialogIntent);
+                    }
+                });
+
+        MaterialDialog dialog = builder.build();
+        dialog.show();
     }
 
     private void showDialog() {

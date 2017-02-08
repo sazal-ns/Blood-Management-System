@@ -7,10 +7,13 @@ package com.rtsoftbd.siddiqui.bloodmanagmentsystem;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +26,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -40,6 +44,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import config.Config;
+import helper.ConnectionDetect;
 
 public class DonorActivity extends AppCompatActivity {
 
@@ -52,13 +57,16 @@ public class DonorActivity extends AppCompatActivity {
     private String call;
 
     private EditText t3v;
-
+    ConnectionDetect cd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donor);
-
+        cd = new ConnectionDetect(this);
         intent = getIntent();
+        if (!cd.isConnected()) {
+            showNetDisabledAlertToUser(this);
+        }
         inIt();
     }
 
@@ -113,6 +121,9 @@ public class DonorActivity extends AppCompatActivity {
         TextView textView = (TextView) findViewById(R.id.bloodGroupTextView);
         textView.setText("You Search For Blood Group " + intent.getStringExtra("spinner"));
 
+        if (!cd.isConnected()) {
+            showNetDisabledAlertToUser(this);
+        }else
         searchBlood(intent.getStringExtra("spinner"));
     }
 
@@ -224,6 +235,52 @@ public class DonorActivity extends AppCompatActivity {
             }
         };
         Volley.newRequestQueue(this).add(request);
+    }
+
+    public void showNetDisabledAlertToUser(final Context context){
+
+        Drawable error_icon = getResources().getDrawable(R.drawable.ic_error_red_24dp);
+
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
+                .title(R.string.error)
+                .content(R.string.connectionError)
+                .positiveText(R.string.positive)
+                .positiveColor(Color.parseColor("#6dc390"))
+                .negativeText(R.string.negative)
+                .negativeColor(Color.RED)
+                .neutralText(R.string.natural)
+                .neutralColor(Color.BLUE)
+                .icon(error_icon)
+                .cancelable(false)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                        System.exit(0);
+                    }
+                })
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+                })
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        Intent dialogIntent = new Intent(android.provider.Settings.ACTION_SETTINGS);
+                        context.startActivity(dialogIntent);
+                    }
+                });
+
+        MaterialDialog dialog = builder.build();
+        dialog.show();
     }
 
     private void showDialog() {
