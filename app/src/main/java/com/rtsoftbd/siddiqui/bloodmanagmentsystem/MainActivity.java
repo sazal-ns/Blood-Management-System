@@ -9,10 +9,13 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -40,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     ImageButton searchBloodImageButton;
     Button loginButton, singUpButton;
 
+    TextView aboutUS;
+
     ConnectionDetect cd;
 
 
@@ -60,6 +65,14 @@ public class MainActivity extends AppCompatActivity {
 
         searchBloodImageButton = (ImageButton) findViewById(R.id.searchBloodImageButton);
 
+        aboutUS = (TextView) findViewById(R.id.aboutusTextView);
+        aboutUS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAboutUS();
+            }
+        });
+
         loginButton= (Button) findViewById(R.id.loginButton);
         singUpButton= (Button) findViewById(R.id.singUpButton);
         if (!cd.isConnected()) {
@@ -67,6 +80,22 @@ public class MainActivity extends AppCompatActivity {
         }
         inIt();
     }
+
+    private View about(){
+        LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewGroup view1 = (ViewGroup) inflater1.inflate(R.layout.about_us, null, false);
+
+        return view1;
+
+    }
+
+    private void showAboutUS(){
+                boolean wrapInScrollView = true;
+                new MaterialDialog.Builder(this)
+                               .title("About US")
+                               .customView(about(), wrapInScrollView)
+                               .show();
+            }
 
     private void inIt() {
         searchBloodImageButton.setOnClickListener(onClickListener);

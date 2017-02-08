@@ -64,7 +64,21 @@
             android:background="#25373D"
             android:textColor="@android:color/white"
             android:layout_marginTop="5dp"/>
+
     </LinearLayout>
+
+    <TextView
+        android:text="@string/aboutUs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/aboutusTextView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:textColor="#44B39D"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        android:shadowColor="@android:color/holo_red_light"
+        android:shadowRadius="5"/>
 
 
 </RelativeLayout>

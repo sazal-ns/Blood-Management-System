@@ -47,5 +47,13 @@
     <string name="negative">Exit</string>
     <string name="natural">Try Again</string>
 
+    <string name="aboutUs">About US</string>
+    <string name="developerName">Noor Nabiul Alam Siddiqui</string>
+    <string name="pos">Android Developer</string>
+    <string name="from">February 2017</string>
+    <string name="copyright">Developed &amp; Copyright</string>
+    <string name="con">By  RTSoftBD.</string>
+    <string name="devDate">Develop at 8 February 2017</string>
+    <string name="devby">Developer </string>
     
 </resources>
