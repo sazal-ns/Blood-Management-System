@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. By RTSoftBD.
+  ~ Author: Noor Nabiul Alam Siddiqui
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#3d455b">
+
+    <TextView
+        android:text="@string/slNo"
+        android:layout_width="60sp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
+        android:textColor="@android:color/white"
+        android:padding="5dp"
+        android:background="@drawable/cell_borders"
+        android:id="@+id/headSlNo" />
+
+    <HorizontalScrollView
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/headSlNo"
+        android:id="@+id/hsDonorName">
+        <TextView
+            android:text="@string/donorName"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize"
+            android:textColor="@android:color/white"
+            android:padding="5dp"
+            android:ems="15"
+            android:maxLines="1"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scrollHorizontally="true"
+            android:ellipsize="marquee"
+            android:scrollbars="horizontal"
+            android:background="@drawable/cell_borders"
+            android:id="@+id/headDonorName" />
+    </HorizontalScrollView>
+
+    <TextView
+        android:text="Number"
+        android:layout_width="120sp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
+        android:textColor="@android:color/white"
+        android:padding="5dp"
+        android:background="@drawable/cell_borders"
+        android:id="@+id/headMobileNumber"
+        android:layout_toRightOf="@+id/hsDonorName"/>
+
+    <HorizontalScrollView
+        android:layout_width="40sp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/headMobileNumber"
+        android:id="@+id/hsAge">
+    <TextView
+        android:text="@string/age"
+        android:layout_width="40sp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
+        android:textColor="@android:color/white"
+        android:padding="5dp"
+        android:background="@drawable/cell_borders"
+        android:id="@+id/headAge"
+        android:ems="3"
+        android:maxLines="1"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollHorizontally="true"
+        android:ellipsize="marquee"
+        android:scrollbars="horizontal"
+        />
+    </HorizontalScrollView>
+    <HorizontalScrollView
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/hsAge"
+        android:id="@+id/hsArea">
+    <TextView
+        android:text="@string/area"
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
+        android:textColor="@android:color/white"
+        android:padding="5dp"
+        android:ems="10"
+        android:maxLines="1"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollHorizontally="true"
+        android:ellipsize="marquee"
+        android:scrollbars="horizontal"
+        android:background="@drawable/cell_borders"
+        android:id="@+id/headArea" />
+    </HorizontalScrollView>
+    <HorizontalScrollView
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/hsArea"
+        android:id="@+id/hsUnion">
+    <TextView
+        android:text="@string/union"
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
+        android:textColor="@android:color/white"
+        android:padding="5dp"
+        android:ems="10"
+        android:maxLines="1"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollHorizontally="true"
+        android:ellipsize="marquee"
+        android:scrollbars="horizontal"
+        android:background="@drawable/cell_borders"
+        android:id="@+id/headUnion" />
+    </HorizontalScrollView>
+    <HorizontalScrollView
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/hsUnion">
+    <TextView
+        android:text="@string/district"
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
+        android:textColor="@android:color/white"
+        android:padding="5dp"
+        android:ems="10"
+        android:maxLines="1"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollHorizontally="true"
+        android:ellipsize="marquee"
+        android:scrollbars="horizontal"
+        android:background="@drawable/cell_borders"
+        android:id="@+id/headDistrict" />
+    </HorizontalScrollView>
+
+</RelativeLayout>

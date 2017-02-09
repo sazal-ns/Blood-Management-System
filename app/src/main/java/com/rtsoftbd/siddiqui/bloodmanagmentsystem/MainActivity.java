@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,23 +18,9 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import config.Config;
 import helper.ConnectionDetect;
+import helper.ShowDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -115,9 +100,11 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, SingUpActivity.class));
                     break;
                 case R.id.searchBloodImageButton:
+                    if (groupSpinner.getSelectedItemPosition()!=0){
                     Intent intent = new Intent(MainActivity.this, DonorActivity.class);
                     intent.putExtra("spinner",String.valueOf(groupSpinner.getSelectedItem()));
-                    startActivity(intent);
+                    startActivity(intent);}
+                    else new ShowDialog(MainActivity.this, "Warning","Please Select a Blood Group.",getResources().getDrawable(R.drawable.ic_warning_orange_24dp));
                     break;
             }
         }

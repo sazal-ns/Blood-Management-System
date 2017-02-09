@@ -12,9 +12,10 @@ package models;
 public class User {
     private static String id, dname, username, password, user_type, mobile, area, thana, union, district, age, bloodg;
 
-    public static String getId() {
-        return id;
+    public User() {
     }
+
+    public static String getId() {return id;}
 
     public static void setId(String id) {
         User.id = id;

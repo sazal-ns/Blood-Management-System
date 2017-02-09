@@ -55,5 +55,9 @@
     <string name="con">By  RTSoftBD.</string>
     <string name="devDate">Develop at 8 February 2017</string>
     <string name="devby">Developer </string>
-    
+
+    <!--donor list-->
+    <string name="slNo">Sl.No</string>
+
+
 </resources>

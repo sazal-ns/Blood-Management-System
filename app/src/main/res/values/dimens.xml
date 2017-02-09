@@ -16,4 +16,6 @@
     <dimen name="text_margin">16dp</dimen>
 
     <dimen name="paddingCode">5dip</dimen>
+
+    <dimen name="textSize">15.0sp</dimen>
 </resources>
