@@ -6,7 +6,7 @@
     <string name="userName">User Name</string>
     <string name="password">Password</string>
     <string name="openAccount">Don\'t Have an Account? &#160;</string>
-    <string name="singUp"> Sign-up</string>
+    <string name="singUp">Registration</string>
     <string name="rememberMe">Remember Me</string>
 
     <!--Main Page-->
@@ -47,17 +47,25 @@
     <string name="negative">Exit</string>
     <string name="natural">Try Again</string>
 
-    <string name="aboutUs">About US</string>
+    <!--About Us-->
+    <string name="aboutUs">ABOUT US</string>
     <string name="developerName">Noor Nabiul Alam Siddiqui</string>
     <string name="pos">Android Developer</string>
-    <string name="from">February 2017</string>
+    <string name="from">FB.com/sazal.ns</string>
     <string name="copyright">Developed &amp; Copyright</string>
     <string name="con">By  RTSoftBD.</string>
-    <string name="devDate">Develop at 8 February 2017</string>
+    <string name="devDate">Develop at February 2017</string>
     <string name="devby">Developer </string>
 
-    <!--donor list-->
-    <string name="slNo">Sl.No</string>
+    <!--Our Goal-->
 
-
+    <string name="ourGoal">OUR GOAL</string>
+    <string name="who">World Blood Donor Day (WHO) is celebrated on 14 June annually all around the world for safe blood and blood products awareness. It also encourages people to donate blood and save a life. Everyone has a life-saving gift which is Blood. Blood camps are held for people to voluntarily donate blood.</string>
+    <string name="goal">SOME WORDS OF OUR GOAL</string>
+    <string name="mission">Mission</string>
+    <string name="missionData">To perform a critical role in healthcare by providing a safe, secure and cost effective supply of quality blood products, essential services and leading edge research to meet the needs of patients.</string>
+    <string name="vision">Vision</string>
+    <string name="visionData">To improve the lives of patients through the power of humanity.</string>
+    <string name="achievements">Achievements</string>
+    <string name="achievementsData">Satisfied clients thanks to our experience.</string>
 </resources>

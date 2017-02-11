@@ -27,7 +27,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".DonorActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="portrait" />
         <activity android:name=".SingUpActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".UserProfile"

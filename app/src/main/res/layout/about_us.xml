@@ -4,18 +4,17 @@
   ~ Author: Noor Nabiul Alam Siddiqui
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp">
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:layout_centerInParent="true"
         android:layout_gravity="center_horizontal">
 
         <ImageView
@@ -29,16 +28,18 @@
             android:text="@string/copyright"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="20sp"
+            android:padding="10sp"
+            android:layout_gravity="center"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/con"
             android:text="@string/con"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dip"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:gravity="center"/>
 
@@ -49,66 +50,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:textColor="#666666"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:gravity="center"/>
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/devBy"
-        android:text="@string/devby"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="20dp"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/sazal"
-            app:civ_border_width="5dp"
-            app:civ_border_color="#EEE657"
-            android:layout_alignParentLeft="true"
-            android:layout_marginRight="20dp" />
-
-        <TextView
-                android:id="@+id/title"
-                android:text="@string/developerName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/profile_image"
-                android:layout_toRightOf="@+id/profile_image"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-        <TextView
-                android:id="@+id/rating"
-                android:text="@string/pos"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/title"
-                android:layout_marginTop="1dip"
-                android:layout_toRightOf="@+id/profile_image"
-                android:textSize="17sp"
-                android:textStyle="italic"/>
-
-        <TextView
-                android:id="@+id/genre"
-                android:text="@string/from"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/rating"
-                android:layout_marginTop="5dp"
-                android:layout_toRightOf="@+id/profile_image"
-                android:textColor="#666666"
-                android:textSize="15sp" />
-    </RelativeLayout>
-</LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. By RTSoftBD.
+  ~ Author: Noor Nabiul Alam Siddiqui
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/goal"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:paddingTop="10sp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/goal"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/who"
+        android:padding="10sp"
+        android:textStyle="bold|italic"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_below="@+id/goal"
+        android:id="@+id/who"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mission"
+        android:padding="10sp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/who"
+        android:id="@+id/mission" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/missionData"
+        android:textSize="15sp"
+        android:padding="10sp"
+        android:layout_toRightOf="@+id/mission"
+        android:layout_below="@id/who"
+        android:id="@+id/missionData"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/vision"
+        android:paddingRight="20sp"
+        android:paddingLeft="10sp"
+        android:paddingTop="10sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/missionData"
+        android:id="@+id/vision"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/visionData"
+        android:padding="10sp"
+        android:layout_toRightOf="@id/vision"
+        android:layout_below="@+id/missionData"
+        android:id="@+id/visionData"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/achievements"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:padding="5sp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/visionData"
+        android:id="@+id/achievements"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/visionData"
+        android:padding="5sp"
+        android:layout_toRightOf="@+id/achievements"
+        android:layout_below="@+id/visionData"/>
+</RelativeLayout>

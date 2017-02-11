@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton searchBloodImageButton;
     Button loginButton, singUpButton;
 
-    TextView aboutUS;
+    TextView aboutUS, ourGoalTextView;
 
     ConnectionDetect cd;
 
@@ -51,10 +51,22 @@ public class MainActivity extends AppCompatActivity {
         searchBloodImageButton = (ImageButton) findViewById(R.id.searchBloodImageButton);
 
         aboutUS = (TextView) findViewById(R.id.aboutusTextView);
+        ourGoalTextView = (TextView) findViewById(R.id.ourGoalTextView);
         aboutUS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showAboutUS();
+            }
+        });
+
+        ourGoalTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean wrapInScrollView = true;
+                new MaterialDialog.Builder(MainActivity.this)
+                        .title("OUR GOAL")
+                        .customView(ourGoal(), wrapInScrollView)
+                        .show();
             }
         });
 
@@ -69,6 +81,14 @@ public class MainActivity extends AppCompatActivity {
     private View about(){
         LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup view1 = (ViewGroup) inflater1.inflate(R.layout.about_us, null, false);
+
+        return view1;
+
+    }
+
+    private View ourGoal(){
+        LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewGroup view1 = (ViewGroup) inflater1.inflate(R.layout.our_goal, null, false);
 
         return view1;
 

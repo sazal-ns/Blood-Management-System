@@ -13,28 +13,35 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.rtsoftbd.siddiqui.bloodmanagmentsystem.DonorActivity"
-    android:background="#3d455b">
+    tools:context="com.rtsoftbd.siddiqui.bloodmanagmentsystem.DonorActivity">
 
     <TextView
-        android:text=""
+        android:text="dsfgvsdfdsfsdf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bloodGroupTextView"
         android:textSize="20sp"
         android:textAlignment="center"
-        android:textColor="@android:color/holo_blue_bright"
+        android:textColor="#203040"
         android:layout_marginBottom="5dp"/>
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="#d9d9d9"
+        android:divider="@color/list_divider"
         android:dividerHeight="1dp"
         android:listSelector="@drawable/list_row_selector"
-        android:layout_below="@+id/bloodGroupTextView"/>
+        android:layout_below="@+id/bloodGroupTextView"
+        android:layout_above="@+id/pw"/>
 
-
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pw"
+        android:padding="5sp"
+        android:id="@+id/pw"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

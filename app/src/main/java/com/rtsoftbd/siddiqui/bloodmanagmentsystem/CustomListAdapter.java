@@ -11,11 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
-import models.User;
 import models.Users;
 
 /**
@@ -55,24 +55,33 @@ public class CustomListAdapter extends BaseAdapter {
         if (convertView == null)
             convertView = inflater.inflate(R.layout.list_row, null);
 
-        TextView headSlNo = (TextView) convertView.findViewById(R.id.headSlNo);
-        TextView headDonorName = (TextView) convertView.findViewById(R.id.headDonorName);
-        TextView headMobileNumber = (TextView) convertView.findViewById(R.id.headMobileNumber);
-        TextView headAge = (TextView) convertView.findViewById(R.id.headAge);
-        TextView headArea = (TextView) convertView.findViewById(R.id.headArea);
-        TextView headUnion = (TextView) convertView.findViewById(R.id.headUnion);
-        TextView headDistrict =(TextView) convertView.findViewById(R.id.headDistrict);
+        ImageView thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
+        TextView headDonorName = (TextView) convertView.findViewById(R.id.donorName);
+        TextView headMobileNumber = (TextView) convertView.findViewById(R.id.number);
+        TextView headAge = (TextView) convertView.findViewById(R.id.age);
+        TextView headArea = (TextView) convertView.findViewById(R.id.area);
+        TextView headDistrict =(TextView) convertView.findViewById(R.id.district);
 
 
         Users u = userList.get(position);
 
-        headSlNo.setText(u.getSl());
+        if (u.getBloodg().contains("A+")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.a_pos));
+        else if (u.getBloodg().contains("A-")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.a_neg));
+        else if (u.getBloodg().contains("B+")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.b_pos));
+        else if (u.getBloodg().contains("B-")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.b_neg));
+        else if (u.getBloodg().contains("O+")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.o_pos));
+        else if (u.getBloodg().contains("O-")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.o_neg));
+        else if (u.getBloodg().contains("AB+")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.ab_pos));
+        else if (u.getBloodg().contains("AB-")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.ab_neg));
+        else thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.logo));
+
+
         headDonorName.setText(u.getDname());
         headMobileNumber.setText(u.getMobile());
-        headAge.setText(u.getAge());
+        headAge.setText("Age: "+u.getAge());
         headArea.setText(u.getArea());
-        headUnion.setText(u.getUnion());
         headDistrict.setText(u.getDistrict());
+
 
         return convertView;
     }

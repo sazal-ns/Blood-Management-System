@@ -83,38 +83,13 @@ public class DonorActivity extends AppCompatActivity {
 
         listView.setClickable(true);
 
-
-       /* listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Users u = (Users) parent.getSelectedItem();
-Log.e("onItemClick",u.getMobile());
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                String phoneNumber = u.getMobile();
-                callIntent.setData(Uri.parse("tel:" + phoneNumber));
-                if (ActivityCompat.checkSelfPermission(DonorActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                startActivity(callIntent);
-
-            }
-        });*/
-
-        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Users u = (Users) parent.getItemAtPosition(position);
-                Log.e("onItemClick",u.getMobile());
+
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
-                String phoneNumber = u.getMobile();
-                callIntent.setData(Uri.parse("tel:" + phoneNumber));
+                callIntent.setData(Uri.parse("tel:" + u.getMobile()));
                 if (ActivityCompat.checkSelfPermission(DonorActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -126,13 +101,11 @@ Log.e("onItemClick",u.getMobile());
                     return;
                 }
                 startActivity(callIntent);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Log.e("onItemClick","do nothing");
             }
         });
+
+
+
     }
 
     private void inIt() {
@@ -141,18 +114,6 @@ Log.e("onItemClick",u.getMobile());
 
         TextView textView = (TextView) findViewById(R.id.bloodGroupTextView);
         textView.setText("You Search For Blood Group " + intent.getStringExtra("spinner"));
-
-        Users users = new Users();
-        users.setSl("Sl.No");
-        users.setDname("Donor Name");
-        users.setMobile("Mobile Number");
-        users.setAge("Age");
-        users.setArea("Area");
-        users.setThana("Thana");
-        users.setUnion("Union");
-        users.setDistrict("District");
-
-        usersList.add(users);
 
         if (!cd.isConnected()) {
             showNetDisabledAlertToUser(this);
@@ -189,6 +150,7 @@ Log.e("onItemClick",u.getMobile());
                             users.setThana(object.getString("thana"));
                             users.setUnion(object.getString("union"));
                             users.setDistrict(object.getString("district"));
+                            users.setBloodg(object.getString("bloodg"));
 
                             usersList.add(users);
 
@@ -222,11 +184,11 @@ Log.e("onItemClick",u.getMobile());
     }
 
 
-    public void callNumber(View view) {
+    /*public void callNumber(View view) {
         if (view != null) { // view is the button tapped
             View parent = (View) view.getParent(); // this should be the LinearLayout
             if (parent instanceof LinearLayout) {
-                TextView unItemVal = (TextView) parent.findViewById(R.id.headMobileNumber);
+                TextView unItemVal = (TextView) parent.findViewById(R.id.number);
                 if (unItemVal != null) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
                     String phoneNumber = unItemVal.getText().toString();
@@ -245,7 +207,7 @@ Log.e("onItemClick",u.getMobile());
                 }
             }
         }
-    }
+    }*/
 
     public void showNetDisabledAlertToUser(final Context context){
 

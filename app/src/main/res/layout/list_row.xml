@@ -5,13 +5,96 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#3d455b">
+    android:background="@drawable/list_row_selector"
+    android:padding="8dp">
+
+
+        <!-- Thumbnail Image -->
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:src="@drawable/blood_drop"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="8dp" />
+
+        <!-- Movie Title -->
+        <TextView
+            android:text="@string/donorName"
+            android:id="@+id/donorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/thumbnail"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:textSize="@dimen/title"
+            android:textStyle="bold" />
+
+        <!-- Rating -->
+        <TextView
+            android:text="@string/area"
+            android:id="@+id/area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/donorName"
+            android:paddingRight="5sp"
+            android:layout_marginTop="1dip"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:textSize="@dimen/rating" />
+
+        <TextView
+            android:text="@string/district"
+            android:id="@+id/district"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/donorName"
+            android:paddingLeft="5sp"
+            android:layout_marginTop="1dip"
+            android:layout_toRightOf="@+id/area"
+            android:textSize="@dimen/rating" />
+
+
+    <!-- Genre -->
+        <TextView
+            android:text="@string/age"
+            android:id="@+id/age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/area"
+            android:layout_marginTop="5dp"
+            android:paddingRight="5sp"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:textColor="#666666"
+            android:textSize="@dimen/genre" />
 
     <TextView
+        android:text="@string/mobileNumber"
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/district"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="5sp"
+        android:layout_toRightOf="@+id/age"
+        android:textColor="#666666"
+        android:textSize="@dimen/genre" />
+
+    <ImageView
+        android:id="@+id/call"
+        app:srcCompat="@drawable/ic_call_green_24dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp" />
+
+        <!-- Release Year -->
+
+    <!--<TextView
         android:text="@string/slNo"
-        android:layout_width="60sp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/textSize"
         android:textColor="@android:color/white"
@@ -145,6 +228,6 @@
         android:scrollbars="horizontal"
         android:background="@drawable/cell_borders"
         android:id="@+id/headDistrict" />
-    </HorizontalScrollView>
+    </HorizontalScrollView>-->
 
 </RelativeLayout>
