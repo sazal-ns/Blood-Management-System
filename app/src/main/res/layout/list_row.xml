@@ -51,6 +51,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/donorName"
             android:paddingLeft="5sp"
+            android:maxLines="1"
+            android:ems="5"
+            android:ellipsize="end"
             android:layout_marginTop="1dip"
             android:layout_toRightOf="@+id/area"
             android:textSize="@dimen/rating" />

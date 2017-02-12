@@ -79,7 +79,7 @@ public class CustomListAdapter extends BaseAdapter {
         headDonorName.setText(u.getDname());
         headMobileNumber.setText(u.getMobile());
         headAge.setText("Age: "+u.getAge());
-        headArea.setText(u.getArea());
+        headArea.setText(u.getArea()+",");
         headDistrict.setText(u.getDistrict());
 
 

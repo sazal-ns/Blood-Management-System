@@ -23,6 +23,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,8 +46,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText userNameEditText, passwordEditText;
     private Button singInButton, singUpButton;
+    private LoginButton fb_login_button;
 
     private ProgressDialog pDialog;
+    private CallbackManager callbackManager;
 
     ConnectionDetect cd;
 
@@ -53,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
 
         cd = new ConnectionDetect(this);
 
+        callbackManager= CallbackManager.Factory.create();
         preInIt();
 
     }
@@ -64,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
        userNameEditText = (EditText) findViewById(R.id.userNameEditText);
        passwordEditText = (EditText) findViewById(R.id.passwordEditText);
+       fb_login_button = (LoginButton) findViewById(R.id.fb_login_button);
 
        singInButton = (Button) findViewById(R.id.singInButton);
        singUpButton = (Button) findViewById(R.id.singUpButton);
@@ -77,6 +88,63 @@ public class LoginActivity extends AppCompatActivity {
     private void inIt(){
         singInButton.setOnClickListener(onClickListener);
         singUpButton.setOnClickListener(onClickListener);
+
+        fb_login_button.setReadPermissions("public_profile", "email","user_friends");
+        fb_login_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+
+                                Log.e("response: ", response + "");
+                                Log.e("response object: ", object.toString() + "");
+                            /*try {
+                                user = new FbUser();
+                                user.facebookID = object.getString("id");
+                                user.email = object.getString("email");
+                                user.name = object.getString("name");
+                                user.gender = object.getString("gender");
+                                user.first_name = object.getString("first_name");
+                                user.last_name = object.getString("last_name");
+                                PrefUtils.setCurrentUser(user,LoginActivity.this);
+                                User.setLoginType(1);
+                                registerUser(FbUser.facebookID, FbUser.email, FbUser.facebookID);
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                            User.setImageLink("null");
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            //intent.putExtra("fb","itIs");
+                            startActivity(intent);
+                            finish();*/
+                            }
+
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender,employee_number,locale,location");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("*****Cancel****","On cancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d("****Error****",error.toString());
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode,resultCode, data);
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -95,6 +163,20 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     };
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        fb_login_button.setReadPermissions("public_profile", "email","user_friends");
+        fb_login_button.performClick();
+        fb_login_button.setPressed(true);
+        fb_login_button.invalidate();
+        //fb_login_button.registerCallback(callbackManager, mCallback);
+        fb_login_button.setPressed(false);
+        fb_login_button.invalidate();
+    }
 
     private void doLogin(final String userName, final String password){
         pDialog.setMessage("Logging in...");

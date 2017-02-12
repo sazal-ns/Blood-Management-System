@@ -8,13 +8,17 @@ package com.rtsoftbd.siddiqui.bloodmanagmentsystem;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -49,12 +54,18 @@ import java.util.Map;
 
 import config.Config;
 import helper.ConnectionDetect;
+import helper.ShowDialog;
 import models.User;
 import models.Users;
 
 public class DonorActivity extends AppCompatActivity {
 
-    private Intent intent;
+    private static final int CALL_PERMISSION_CONSTANT = 100;
+    private static final int REQUEST_PERMISSION_SETTING = 101;
+    private boolean sentToSettings = false;
+    private SharedPreferences permissionStatus;
+
+    private Intent intent, callIntent;
 
     private ProgressDialog pDialog;
 
@@ -79,6 +90,9 @@ public class DonorActivity extends AppCompatActivity {
         if (!cd.isConnected()) {
             showNetDisabledAlertToUser(this);
         }
+
+        permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
+
         inIt();
 
         listView.setClickable(true);
@@ -88,24 +102,119 @@ public class DonorActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Users u = (Users) parent.getItemAtPosition(position);
 
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent = new Intent(Intent.ACTION_CALL);
                 callIntent.setData(Uri.parse("tel:" + u.getMobile()));
+
                 if (ActivityCompat.checkSelfPermission(DonorActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                startActivity(callIntent);
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(DonorActivity.this, Manifest.permission.CALL_PHONE)){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(DonorActivity.this);
+                        builder.setTitle("Need Call Phone Permission");
+                        builder.setMessage("To directly dial number, this app needs call phone permission.");
+                        builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                ActivityCompat.requestPermissions(DonorActivity.this, new String[]{Manifest.permission.CALL_PHONE},
+                                        CALL_PERMISSION_CONSTANT);
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        builder.show();
+                    }else if (permissionStatus.getBoolean(Manifest.permission.CALL_PHONE,false)){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(DonorActivity.this);
+                        builder.setTitle("Need Call Phone Permission");
+                        builder.setMessage("To directly dial number, this app needs call phone permission.");
+                        builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                sentToSettings = true;
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                intent.setData(uri);
+                                startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                                Toast.makeText(getBaseContext(), "Go to Permissions to Grant Storage", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        builder.show();
+                    }else {
+                        ActivityCompat.requestPermissions(DonorActivity.this, new String[]{Manifest.permission.CALL_PHONE},
+                                CALL_PERMISSION_CONSTANT);
+                    }
+                    SharedPreferences.Editor editor = permissionStatus.edit();
+                    editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,true);
+                    editor.commit();
+                }else call();
             }
         });
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CALL_PERMISSION_CONSTANT){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                call();
+            }else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(DonorActivity.this, Manifest.permission.CALL_PHONE)){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DonorActivity.this);
+                    builder.setTitle("Need Call Phone Permission");
+                    builder.setMessage("To directly dial number, this app needs call phone permission.");
+                    builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
 
+                            ActivityCompat.requestPermissions(DonorActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                    CALL_PERMISSION_CONSTANT);
 
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                }else new ShowDialog(DonorActivity.this, "Sorry","We Can't Call Directly from app.\n Call Button not working now.",getResources().getDrawable(R.drawable.ic_error_red_24dp));
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_PERMISSION_SETTING){
+            if (ActivityCompat.checkSelfPermission(DonorActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
+                call();
+            }
+        }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (sentToSettings){
+            if (ActivityCompat.checkSelfPermission(DonorActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                call();
+            }
+        }
+    }
+
+    private void call(){
+        startActivity(callIntent);
     }
 
     private void inIt() {
@@ -182,32 +291,6 @@ public class DonorActivity extends AppCompatActivity {
 
 
     }
-
-
-    /*public void callNumber(View view) {
-        if (view != null) { // view is the button tapped
-            View parent = (View) view.getParent(); // this should be the LinearLayout
-            if (parent instanceof LinearLayout) {
-                TextView unItemVal = (TextView) parent.findViewById(R.id.number);
-                if (unItemVal != null) {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL);
-                    String phoneNumber = unItemVal.getText().toString();
-                    callIntent.setData(Uri.parse("tel:" + phoneNumber));
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return;
-                    }
-                    startActivity(callIntent);
-                }
-            }
-        }
-    }*/
 
     public void showNetDisabledAlertToUser(final Context context){
 

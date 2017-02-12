@@ -113,14 +113,24 @@ public class UserProfile extends AppCompatActivity {
         districtEditText = (EditText) findViewById(R.id.districtEditText);
         ageEditText = (EditText) findViewById(R.id.ageEditText);
 
+        userNameEditText.setClickable(false);
+        userNameEditText.setEnabled(false);
+
         singUpButtonD = (Button) findViewById(R.id.singUnButtonD);
         singUpButtonD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!cd.isConnected()) {
                     showNetDisabledAlertToUser(UserProfile.this);
-                }else
+                } else if (donorNameEditText.getText().toString().isEmpty() && userNameEditText.getText().toString().isEmpty() &&
+                        passwordEditText.getText().toString().isEmpty() && mobileEditText.getText().toString().isEmpty() &&
+                        areaEditText.getText().toString().isEmpty() && thanaEditText.getText().toString().isEmpty() &&
+                        unionEditText.getText().toString().isEmpty() &&  districtEditText.getText().toString().isEmpty() &&
+                        ageEditText.getText().toString().isEmpty())
+                    new ShowDialog(UserProfile.this, "Error!!!", "Please Provide All Information",
+                            getResources().getDrawable(R.drawable.ic_error_red_24dp));
 
+                else
                 updateInfo(donorNameEditText.getText().toString().trim(), userNameEditText.getText().toString().trim(),
                         passwordEditText.getText().toString().trim(), mobileEditText.getText().toString().trim(),
                         areaEditText.getText().toString().trim(),thanaEditText.getText().toString().trim(),

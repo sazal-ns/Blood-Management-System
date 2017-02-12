@@ -68,4 +68,8 @@
     <string name="visionData">To improve the lives of patients through the power of humanity.</string>
     <string name="achievements">Achievements</string>
     <string name="achievementsData">Satisfied clients thanks to our experience.</string>
+
+    <!--facebook-->
+    <string name="facebook_app_id">1218930124829482</string>
+    <string name="fb_login_protocol_scheme">fb1218930124829482</string>
 </resources>

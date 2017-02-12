@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/search"
             android:id="@+id/searchBloodImageButton"
-            android:background="#3498DB"
+            android:background="@android:color/holo_red_dark"
             android:layout_weight="1"
             android:contentDescription="@string/contentDescription"/>
 
@@ -48,6 +48,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="40dp">
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/fb_login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5sp"/>
 
         <Button
             android:text="@string/login"
