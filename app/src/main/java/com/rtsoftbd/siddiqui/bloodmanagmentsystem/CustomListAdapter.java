@@ -14,8 +14,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+
 import java.util.List;
 
+import helper.AppController;
 import models.Users;
 
 /**
@@ -26,6 +30,7 @@ public class CustomListAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
     private List<Users> userList;
+    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
     public CustomListAdapter(Activity activity, List<Users> userList) {
         this.activity = activity;
@@ -55,7 +60,12 @@ public class CustomListAdapter extends BaseAdapter {
         if (convertView == null)
             convertView = inflater.inflate(R.layout.list_row, null);
 
-        ImageView thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
+        if (imageLoader == null)
+            imageLoader = AppController.getInstance().getImageLoader();
+
+        NetworkImageView thumbnail = (NetworkImageView) convertView.findViewById(R.id.thumbnail);
+
+        //ImageView thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
         TextView headDonorName = (TextView) convertView.findViewById(R.id.donorName);
         TextView headMobileNumber = (TextView) convertView.findViewById(R.id.number);
         TextView headAge = (TextView) convertView.findViewById(R.id.age);
@@ -65,16 +75,25 @@ public class CustomListAdapter extends BaseAdapter {
 
         Users u = userList.get(position);
 
-        if (u.getBloodg().contains("A+")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.a_pos));
-        else if (u.getBloodg().contains("A-")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.a_neg));
-        else if (u.getBloodg().contains("B+")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.b_pos));
-        else if (u.getBloodg().contains("B-")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.b_neg));
-        else if (u.getBloodg().contains("O+")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.o_pos));
-        else if (u.getBloodg().contains("O-")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.o_neg));
-        else if (u.getBloodg().contains("AB+")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.ab_pos));
-        else if (u.getBloodg().contains("AB-")) thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.ab_neg));
-        else thumbnail.setImageDrawable(activity.getResources().getDrawable(R.drawable.logo));
-
+        if (u.getImageLink().contains("null")) {
+            if (u.getBloodg().contains("A+"))
+                thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Apos.png", imageLoader);
+            else if (u.getBloodg().contains("A-"))
+                thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Aneg.png", imageLoader);
+            else if (u.getBloodg().contains("B+"))
+                thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Bpos.png", imageLoader);
+            else if (u.getBloodg().contains("B-"))
+                thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Bneg.png", imageLoader);
+            else if (u.getBloodg().contains("O+"))
+                thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Opos.png", imageLoader);
+            else if (u.getBloodg().contains("O-"))
+                thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Oneg.png", imageLoader);
+            else if (u.getBloodg().contains("AB+"))
+                thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/ABpos.png", imageLoader);
+            else if (u.getBloodg().contains("AB-"))
+                thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/ABneg.png", imageLoader);
+        }else
+        thumbnail.setImageUrl(u.getImageLink(), imageLoader);
 
         headDonorName.setText(u.getDname());
         headMobileNumber.setText(u.getMobile());

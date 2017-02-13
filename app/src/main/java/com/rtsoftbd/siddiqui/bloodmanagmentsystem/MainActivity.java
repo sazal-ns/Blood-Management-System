@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.hardware.usb.UsbRequest;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +20,33 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import config.Config;
 import helper.ConnectionDetect;
 import helper.ShowDialog;
+import models.FBUsers;
+import models.User;
+import models.Users;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +56,11 @@ public class MainActivity extends AppCompatActivity {
 
     TextView aboutUS, ourGoalTextView;
 
+    private LoginButton fb_login_button;
+    private CallbackManager callbackManager;
+
     ConnectionDetect cd;
+    boolean fb = false;
 
 
     @Override
@@ -42,7 +72,144 @@ public class MainActivity extends AppCompatActivity {
 
         cd = new ConnectionDetect(this);
 
+        callbackManager= CallbackManager.Factory.create();
+        fb_login_button = (LoginButton) findViewById(R.id.fb_login_button);
+        fb_login_button.setReadPermissions("public_profile", "email");
+
+        fb_login_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                if(loginResult.getAccessToken() != null){
+                    fb=true;
+                }
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+
+                                Log.e("response: ", response + "");
+                                Log.e("response object: ", object.toString() + "");
+                            try {
+                                FBUsers.setId(object.getString("id"));
+                                FBUsers.setEmail(object.getString("email"));
+                                FBUsers.setName(object.getString("name"));
+                                FBUsers.setImageLink("https://graph.facebook.com/"+object.getString("id")+"/picture?type=large");
+                                FBUsers.setIsFB("true");
+                                FBUsers.setFirst_name(object.getString("first_name"));
+                                JSONObject jsonObject = object.getJSONObject("age_range");
+                                FBUsers.setAge_range(jsonObject.getString("min"));
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                                if (fb){
+                                    doLogin(FBUsers.getFirst_name(), FBUsers.getId());
+                                }else {
+                                    Intent intent = new Intent(MainActivity.this, SingUpActivity.class);
+                                    startActivity(intent);
+                                    LoginManager.getInstance().logOut();
+                                    finish();
+                                }
+                            }
+
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,age_range,email,name,first_name");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("*****Cancel****","On cancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d("****Error****",error.toString());
+            }
+        });
+
         preInIt();
+    }
+
+    public void doLogin(final String userName, final String password){
+
+        StringRequest request = new StringRequest(Request.Method.POST, Config.URL_LOGIN, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                JSONObject jsonObject;
+                try {
+                    jsonObject = new JSONObject(response);
+                    Log.e("response", response);
+
+                    if (jsonObject.toString().contains("false")){
+                        JSONObject object = new JSONObject(jsonObject.getString("user"));
+
+                        User.setId(object.getString("id"));
+                        User.setDname(object.getString("dname"));
+                        User.setUsername(object.getString("username"));
+                        User.setPassword(object.getString("password"));
+                        User.setUser_type(object.getString("user_type"));
+                        User.setMobile("0"+object.getString("mobile"));
+                        User.setArea(object.getString("area"));
+                        User.setThana(object.getString("thana"));
+                        User.setUnion(object.getString("union"));
+                        User.setDistrict(object.getString("district"));
+                        User.setAge(object.getString("age"));
+                        User.setBloodg(object.getString("bloodg"));
+                        User.setImageLink(object.getString("image"));
+
+                        Intent intent = new Intent(MainActivity.this, UserProfile.class);
+                        LoginManager.getInstance().logOut();
+                        startActivity(intent);
+                        finish();
+
+                    }else{
+                        new ShowDialog(MainActivity.this, "Error", "You changed password.\n Please login by clicked login \n Your user name is"+FBUsers.getFirst_name(),getResources().getDrawable(R.drawable.ic_error_red_24dp));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("doLogin onErrorResponse", error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("userName",userName);
+                params.put("password", password);
+                //Log.d("info", userName+"->"+password);
+
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(request);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode,resultCode, data);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        /*fb_login_button.setReadPermissions("public_profile", "email","user_friends"
+        fb_login_button.setPressed(true);
+        fb_login_button.invalidate();
+        //fb_login_button.registerCallback(callbackManager, mCallback);
+        fb_login_button.setPressed(false);
+        fb_login_button.invalidate();*/
     }
 
     private void preInIt() {

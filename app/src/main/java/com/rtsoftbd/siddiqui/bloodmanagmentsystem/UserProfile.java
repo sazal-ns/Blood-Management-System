@@ -194,6 +194,7 @@ public class UserProfile extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
+                Log.d("id",User.getId());
                 params.put("id",User.getId());
                 params.put("dname",donorName);
                 params.put("username",userName);

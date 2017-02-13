@@ -10,9 +10,17 @@ package models;
  */
 
 public class User {
-    private static String id, dname, username, password, user_type, mobile, area, thana, union, district, age, bloodg;
+    private static String id, dname, username, password, user_type, mobile, area, thana, union, district, age, bloodg, imageLink;
 
     public User() {
+    }
+
+    public static String getImageLink() {
+        return imageLink;
+    }
+
+    public static void setImageLink(String imageLink) {
+        User.imageLink = imageLink;
     }
 
     public static String getId() {return id;}

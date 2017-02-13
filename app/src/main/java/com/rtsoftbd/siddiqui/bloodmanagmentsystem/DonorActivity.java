@@ -153,7 +153,7 @@ public class DonorActivity extends AppCompatActivity {
                                 CALL_PERMISSION_CONSTANT);
                     }
                     SharedPreferences.Editor editor = permissionStatus.edit();
-                    editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,true);
+                    editor.putBoolean(Manifest.permission.CALL_PHONE,true);
                     editor.commit();
                 }else call();
             }
@@ -260,6 +260,7 @@ public class DonorActivity extends AppCompatActivity {
                             users.setUnion(object.getString("union"));
                             users.setDistrict(object.getString("district"));
                             users.setBloodg(object.getString("bloodg"));
+                            users.setImageLink(object.getString("image"));
 
                             usersList.add(users);
 

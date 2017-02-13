@@ -10,10 +10,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +42,10 @@ import java.util.Map;
 
 import config.Config;
 import helper.ConnectionDetect;
+import helper.LocationAddress;
+import helper.LocationService;
 import helper.ShowDialog;
+import models.FBUsers;
 import models.User;
 
 public class SingUpActivity extends AppCompatActivity {
@@ -46,6 +54,8 @@ public class SingUpActivity extends AppCompatActivity {
             districtEditText,ageEditText;
     private Spinner groupSpinner;
     private Button singUpButtonD;
+
+    //LocationService appLocationService;
 
     private ProgressDialog pDialog;
     ConnectionDetect cd;
@@ -58,6 +68,18 @@ public class SingUpActivity extends AppCompatActivity {
         if (!cd.isConnected()) {
             showNetDisabledAlertToUser(this);
         }
+
+        //appLocationService= new LocationService(SingUpActivity.this);
+
+        /*Location networkLocation= appLocationService.getLocation(LocationManager.NETWORK_PROVIDER);
+        if (networkLocation!= null)
+        {
+            double latitude = networkLocation.getLatitude();
+            double longitude = networkLocation.getLongitude();
+            LocationAddress locationAddress = new LocationAddress();
+            locationAddress.getAddressFromLocation(latitude , longitude , getApplicationContext(), new GeocoderHandler());
+        }*/
+
         preInIt();
     }
 
@@ -76,6 +98,38 @@ public class SingUpActivity extends AppCompatActivity {
         unionEditText = (EditText) findViewById(R.id.unionEditText);
         districtEditText = (EditText) findViewById(R.id.districtEditText);
         ageEditText = (EditText) findViewById(R.id.ageEditText);
+
+        if (FBUsers.getIsFB().contains("true")){
+            donorNameEditText.setText(FBUsers.getName());
+            userNameEditText.setText(FBUsers.getFirst_name());
+            passwordEditText.setText(FBUsers.getId());
+            ageEditText.setText(FBUsers.getAge_range());
+        }
+
+        /*try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+
+            if(addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
+                for(int i=0; i<returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                areaEditText.setText(strReturnedAddress.toString());
+            }
+            else{
+                areaEditText.setText("No Address returned!");
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            areaEditText.setText("Canon't get Address!");
+        }*/
+            /*areaEditText.setText(User.getArea());
+            districtEditText.setText(User.getDistrict());*/
+
+        TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        mobileEditText.setText(tMgr.getLine1Number());
 
         singUpButtonD = (Button) findViewById(R.id.singUnButtonD);
         singUpButtonD.setOnClickListener(new View.OnClickListener() {
@@ -155,18 +209,33 @@ public class SingUpActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("dname",donor);
-                params.put("username",userName);
-                params.put("password",password);
-                params.put("user_type",user_type);
-                params.put("mobile",mobile);
-                params.put("area",area);
-                params.put("thana",thana);
-                params.put("union",union);
-                params.put("district",district);
-                params.put("age",age);
-                params.put("bloodg",bloodGroup);
-
+                if (FBUsers.getIsFB().contains("false")) {
+                    params.put("dname", donor);
+                    params.put("username", userName);
+                    params.put("password", password);
+                    params.put("user_type", user_type);
+                    params.put("mobile", mobile);
+                    params.put("area", area);
+                    params.put("thana", thana);
+                    params.put("union", union);
+                    params.put("district", district);
+                    params.put("age", age);
+                    params.put("bloodg", bloodGroup);
+                    params.put("image","");
+                }else {
+                    params.put("dname", FBUsers.getName());
+                    params.put("username", FBUsers.getFirst_name());
+                    params.put("password", FBUsers.getId());
+                    params.put("user_type", user_type);
+                    params.put("mobile", mobile);
+                    params.put("area", area);
+                    params.put("thana", thana);
+                    params.put("union", union);
+                    params.put("district", district);
+                    params.put("age", FBUsers.getAge_range());
+                    params.put("bloodg", bloodGroup);
+                    params.put("image",FBUsers.getImageLink());
+                }
                 return params;
             }
         };
@@ -229,4 +298,21 @@ public class SingUpActivity extends AppCompatActivity {
         if (pDialog.isShowing())
             pDialog.dismiss();
     }
+
+   /* private class GeocoderHandler extends Handler {
+        @Override
+        public void handleMessage(Message message) {
+            String locationAddress;
+            switch (message.what) {
+                case 1:
+                    Bundle bundle = message.getData();
+                    locationAddress= bundle.getString("address");
+                    break;
+                default:
+                    locationAddress= null;
+            }
+            districtEditText.setText(locationAddress);
+        }
+    }*/
+
 }

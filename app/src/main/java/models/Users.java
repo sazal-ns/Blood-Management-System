@@ -10,13 +10,13 @@ package models;
  */
 
 public class Users {
-    private  String sl, dname, mobile, area, thana, union, district, age, bloodg;
+    private  String sl, dname, mobile, area, thana, union, district, age, bloodg, imageLink;
 
     public Users() {
+
     }
 
-    public Users(String sl, String dname, String mobile, String area, String thana, String union, String district, String age, String bloodg) {
-        this.sl = sl;
+    public Users(String dname, String mobile, String area, String thana, String union, String district, String age, String bloodg, String imageLink) {
         this.dname = dname;
         this.mobile = mobile;
         this.area = area;
@@ -25,6 +25,15 @@ public class Users {
         this.district = district;
         this.age = age;
         this.bloodg = bloodg;
+        this.imageLink = imageLink;
+    }
+
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 
     public String getSl() {

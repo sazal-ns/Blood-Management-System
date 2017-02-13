@@ -13,13 +13,12 @@
 
 
         <!-- Thumbnail Image -->
-        <ImageView
-            android:id="@+id/thumbnail"
-            android:src="@drawable/blood_drop"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginRight="8dp" />
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="8dp" />
 
         <!-- Movie Title -->
         <TextView
@@ -36,13 +35,17 @@
         <TextView
             android:text="@string/area"
             android:id="@+id/area"
-            android:layout_width="wrap_content"
+            android:maxLength="15"
             android:layout_height="wrap_content"
             android:layout_below="@id/donorName"
             android:paddingRight="5sp"
+            android:maxLines="1"
+            android:maxEms="15"
+            android:ellipsize="end"
             android:layout_marginTop="1dip"
             android:layout_toRightOf="@+id/thumbnail"
-            android:textSize="@dimen/rating" />
+            android:textSize="@dimen/rating"
+            android:layout_width="wrap_content" />
 
         <TextView
             android:text="@string/district"
