@@ -10,11 +10,15 @@ package config;
  */
 
 public final class Config {
-    public static String URL_LOGIN = "http://api.rtsoftbd.us/blood/login.php";
+    private static String BASE_URL = "http://api.thebloodbank.tk/blood/";
 
-    public static String URL_SEARCH_BLOOD= "http://api.rtsoftbd.us/blood/search.php";
+    public static String URL_LOGIN = BASE_URL.concat("login.php");
 
-    public static String URL_REGISTRATION= "http://api.rtsoftbd.us/blood/reg.php";
+    public static String URL_SEARCH_BLOOD= BASE_URL.concat("search.php");
 
-    public static String URL_UPDATE_USER_INFO= "http://api.rtsoftbd.us/blood/updateUserInfo.php";
+    public static String URL_REGISTRATION= BASE_URL.concat("reg.php");
+
+    public static String URL_UPDATE_USER_INFO= BASE_URL.concat("updateUserInfo.php");
+
+    public static String URL_LOC = BASE_URL.concat("location.php");
 }

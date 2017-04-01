@@ -221,7 +221,7 @@ public class SingUpActivity extends AppCompatActivity {
                     params.put("district", district);
                     params.put("age", age);
                     params.put("bloodg", bloodGroup);
-                    params.put("image","");
+                    params.put("image","null");
                 }else {
                     params.put("dname", FBUsers.getName());
                     params.put("username", FBUsers.getFirst_name());

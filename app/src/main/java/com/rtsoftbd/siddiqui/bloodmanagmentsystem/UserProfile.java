@@ -31,6 +31,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.nhaarman.supertooltips.ToolTip;
+import com.nhaarman.supertooltips.ToolTipRelativeLayout;
+import com.nhaarman.supertooltips.ToolTipView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,8 +116,8 @@ public class UserProfile extends AppCompatActivity {
         districtEditText = (EditText) findViewById(R.id.districtEditText);
         ageEditText = (EditText) findViewById(R.id.ageEditText);
 
-        userNameEditText.setClickable(false);
-        userNameEditText.setEnabled(false);
+        userNameEditText.setFocusable(false);
+        userNameEditText.setClickable(true);
 
         singUpButtonD = (Button) findViewById(R.id.singUnButtonD);
         singUpButtonD.setOnClickListener(new View.OnClickListener() {
@@ -260,6 +263,10 @@ public class UserProfile extends AppCompatActivity {
         dialog.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     private void showDialog() {
         if (!pDialog.isShowing())

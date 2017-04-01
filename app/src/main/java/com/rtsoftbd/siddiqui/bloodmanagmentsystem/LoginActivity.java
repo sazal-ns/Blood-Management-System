@@ -45,7 +45,7 @@ import models.User;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText userNameEditText, passwordEditText;
-    private Button singInButton, singUpButton;
+    private Button singInButton, singUpButton,forget;
 
     private ProgressDialog pDialog;
 
@@ -74,6 +74,8 @@ public class LoginActivity extends AppCompatActivity {
 
        singInButton = (Button) findViewById(R.id.singInButton);
        singUpButton = (Button) findViewById(R.id.singUpButton);
+       forget = (Button) findViewById(R.id.forget);
+
        if (!cd.isConnected()) {
            showNetDisabledAlertToUser(this);
        }
@@ -84,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
     private void inIt(){
         singInButton.setOnClickListener(onClickListener);
         singUpButton.setOnClickListener(onClickListener);
-
+        forget.setOnClickListener(onClickListener);
 
     }
 
@@ -101,6 +103,8 @@ public class LoginActivity extends AppCompatActivity {
                 case R.id.singUpButton:
                     startActivity(new Intent(LoginActivity.this, SingUpActivity.class));
                     break;
+                case R.id.forget:
+
             }
         }
     };

@@ -75,22 +75,22 @@ public class CustomListAdapter extends BaseAdapter {
 
         Users u = userList.get(position);
 
-        if (u.getImageLink().contains("null")) {
-            if (u.getBloodg().contains("A+"))
+        if (u.getImageLink().contentEquals("null")) {
+            if (u.getBloodg().contentEquals("A+"))
                 thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Apos.png", imageLoader);
-            else if (u.getBloodg().contains("A-"))
+            else if (u.getBloodg().contentEquals("A-"))
                 thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Aneg.png", imageLoader);
-            else if (u.getBloodg().contains("B+"))
+            else if (u.getBloodg().contentEquals("B+"))
                 thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Bpos.png", imageLoader);
-            else if (u.getBloodg().contains("B-"))
+            else if (u.getBloodg().contentEquals("B-"))
                 thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Bneg.png", imageLoader);
-            else if (u.getBloodg().contains("O+"))
+            else if (u.getBloodg().contentEquals("O+"))
                 thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Opos.png", imageLoader);
-            else if (u.getBloodg().contains("O-"))
+            else if (u.getBloodg().contentEquals("O-"))
                 thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Oneg.png", imageLoader);
-            else if (u.getBloodg().contains("AB+"))
+            else if (u.getBloodg().contentEquals("AB+"))
                 thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/ABpos.png", imageLoader);
-            else if (u.getBloodg().contains("AB-"))
+            else if (u.getBloodg().contentEquals("AB-"))
                 thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/ABneg.png", imageLoader);
         }else
         thumbnail.setImageUrl(u.getImageLink(), imageLoader);

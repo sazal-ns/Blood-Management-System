@@ -73,6 +73,8 @@ public class DonorActivity extends AppCompatActivity {
     private List<Users> usersList = new ArrayList<>();
     private CustomListAdapter adapter;
 
+    private String content;
+
     ConnectionDetect cd;
 
     @Override
@@ -101,7 +103,7 @@ public class DonorActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Users u = (Users) parent.getItemAtPosition(position);
-
+                content = "Name :" +u.getDname()+"\nMobile : "+u.getMobile();
                 callIntent = new Intent(Intent.ACTION_CALL);
                 callIntent.setData(Uri.parse("tel:" + u.getMobile()));
 
@@ -214,7 +216,23 @@ public class DonorActivity extends AppCompatActivity {
     }
 
     private void call(){
-        startActivity(callIntent);
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
+                .title("Call Donor")
+                .content(content)
+                .positiveText("Call")
+                .positiveColor(Color.parseColor("#6dc390"))
+                .negativeText("Cancel")
+                .negativeColor(Color.RED)
+                .cancelable(false)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        startActivity(callIntent);
+                    }
+                });
+
+        MaterialDialog dialog = builder.build();
+        dialog.show();
     }
 
     private void inIt() {
@@ -226,11 +244,17 @@ public class DonorActivity extends AppCompatActivity {
 
         if (!cd.isConnected()) {
             showNetDisabledAlertToUser(this);
-        } else
-            searchBlood(intent.getStringExtra("spinner"));
+        } else {
+            String dis, area;
+            dis = intent.getStringExtra("dis");
+            area = intent.getStringExtra("area");
+            if (dis.isEmpty()) dis = "NO";
+            if (area.isEmpty()) area = "NO";
+            searchBlood(intent.getStringExtra("spinner"), dis, area);
+        }
     }
 
-    private void searchBlood(final String bloodGroup) {
+    private void searchBlood(final String bloodGroup, final String dis, final String area) {
         pDialog.setMessage("Loading...");
         showDialog();
         StringRequest request = new StringRequest(Request.Method.POST, Config.URL_SEARCH_BLOOD, new Response.Listener<String>() {
@@ -285,6 +309,9 @@ public class DonorActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("bloodg", bloodGroup);
+                params.put("area", area);
+                params.put("district", dis);
+
                 return params;
             }
         };

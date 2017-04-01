@@ -13,27 +13,70 @@
     android:background="@drawable/give_blood_bg">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/main"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_marginTop="150dp">
 
         <Spinner
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="50dip"
             android:id="@+id/groupSpinner"
-            android:layout_weight="3"
-            android:layout_marginRight="10sp"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:entries="@array/blood_group"
-            android:background="#53DF83"
+            android:background="@android:color/white"
             android:textAlignment="center"
             />
 
-        <ImageButton
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/search"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:layout_marginRight="5dp">
+                <AutoCompleteTextView
+                    android:id="@+id/serachLoctionarea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Area"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
+                <AutoCompleteTextView
+                    android:id="@+id/serachLoction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="District"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+
+
+        <Button
+            android:text="Search"
+            android:textAllCaps="true"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/searchBloodImageButton"
             android:background="@android:color/holo_red_dark"
             android:layout_weight="1"
@@ -44,17 +87,22 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="150dip"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp">
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/main">
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/fb_login_button"
+        <Button
+            android:text="@string/singUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="5sp"/>
+            android:id="@+id/singUpButton"
+            android:textStyle="bold"
+            android:background="#27AE60"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="5dp"/>
 
         <Button
             android:text="@string/login"
@@ -65,15 +113,13 @@
             android:background="#CF000F"
             android:textColor="@android:color/white"/>
 
-        <Button
-            android:text="@string/singUp"
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/fb_login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/singUpButton"
-            android:textStyle="bold"
-            android:background="#27AE60"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="5dp"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5sp"/>
+
 
     </LinearLayout>
 

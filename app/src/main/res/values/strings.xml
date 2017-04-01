@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Blood Plus</string>
+    <string name="app_name">The Blood Bank</string>
 
     <!--Login Page-->
     <string name="login">Login</string>
@@ -25,7 +25,7 @@
         <item>AB+</item>
         <item>AB-</item>
     </string-array>
-    
+
     <!--SingUP-->
     <string name="donorName">Donor Name</string>
     <string name="repeatPassword">Repeat Password</string>
