@@ -39,6 +39,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,7 +59,7 @@ import models.Users;
 
 public class MainActivity extends AppCompatActivity {
 
-    Spinner groupSpinner;
+    MaterialSpinner groupSpinner;
     Button searchBloodImageButton;
     Button loginButton, singUpButton;
 
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private List<String> areas = new ArrayList<>();
     private List<String> districts = new ArrayList<>();
 
+    private String bloodGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         cd = new ConnectionDetect(this);
+
+        bloodGroup = "";
 
         callbackManager= CallbackManager.Factory.create();
         fb_login_button = (LoginButton) findViewById(R.id.fb_login_button);
@@ -309,11 +313,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void preInIt() {
-        groupSpinner = (Spinner) findViewById(R.id.groupSpinner);
+
+        groupSpinner = (MaterialSpinner) findViewById(R.id.groupSpinner);
+        groupSpinner.setItems(getResources().getStringArray(R.array.blood_group));
+        groupSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                bloodGroup = item;
+                Log.d("Blood",item + "-->" + bloodGroup);
+            }
+        });
 
         searchBloodImageButton = (Button) findViewById(R.id.searchBloodImageButton);
 
-        aboutUS = (TextView) findViewById(R.id.aboutusTextView);
+        /*aboutUS = (TextView) findViewById(R.id.aboutusTextView);
         ourGoalTextView = (TextView) findViewById(R.id.ourGoalTextView);
         aboutUS.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -331,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
                         .customView(ourGoal(), wrapInScrollView)
                         .show();
             }
-        });
+        });*/
 
         loginButton= (Button) findViewById(R.id.loginButton);
         singUpButton= (Button) findViewById(R.id.singUpButton);
@@ -343,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
         areaET.setAdapter(adapter);
 
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, SAddr.getDistricts());
-        districtET.setAdapter(adapter);
+        districtET.setAdapter(adapter2);
 
         if (!cd.isConnected()) {
             showNetDisabledAlertToUser(this);
@@ -393,10 +406,10 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, SingUpActivity.class));
                     break;
                 case R.id.searchBloodImageButton:
-                    if (groupSpinner.getSelectedItemPosition()!=0 ){
+                    if (bloodGroup.length()>0 && bloodGroup.length()<=3){
                         if (!areaET.getText().toString().isEmpty() || !districtET.getText().toString().isEmpty()){
                     Intent intent = new Intent(MainActivity.this, DonorActivity.class);
-                    intent.putExtra("spinner",String.valueOf(groupSpinner.getSelectedItem()));
+                    intent.putExtra("spinner",bloodGroup);
                             intent.putExtra("area", areaET.getText().toString());
                             intent.putExtra("dis", districtET.getText().toString());
                     startActivity(intent);

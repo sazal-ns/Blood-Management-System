@@ -21,6 +21,8 @@ import android.support.v7.app.AppCompatDelegate;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -46,14 +48,17 @@ import helper.LocationAddress;
 import helper.LocationService;
 import helper.ShowDialog;
 import models.FBUsers;
+import models.SAddr;
 import models.User;
 
 public class SingUpActivity extends AppCompatActivity {
 
-    private EditText donorNameEditText,userNameEditText, passwordEditText, mobileEditText, areaEditText, thanaEditText,unionEditText,
-            districtEditText,ageEditText;
+    private EditText donorNameEditText,userNameEditText, passwordEditText, mobileEditText,  thanaEditText,unionEditText, emailText,
+            ageEditText;
     private Spinner groupSpinner;
     private Button singUpButtonD;
+
+    private AutoCompleteTextView areaEditText, districtEditText;
 
     //LocationService appLocationService;
 
@@ -93,11 +98,18 @@ public class SingUpActivity extends AppCompatActivity {
         userNameEditText = (EditText) findViewById(R.id.userNameEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
         mobileEditText = (EditText) findViewById(R.id.mobileEditText);
-        areaEditText = (EditText) findViewById(R.id.areaEditText);
+        areaEditText = (AutoCompleteTextView) findViewById(R.id.areaEditText);
         thanaEditText = (EditText) findViewById(R.id.thanaEditText);
         unionEditText = (EditText) findViewById(R.id.unionEditText);
-        districtEditText = (EditText) findViewById(R.id.districtEditText);
+        districtEditText = (AutoCompleteTextView) findViewById(R.id.districtEditText);
         ageEditText = (EditText) findViewById(R.id.ageEditText);
+        emailText = (EditText) findViewById(R.id.emailEditText);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, SAddr.getAreas());
+        areaEditText.setAdapter(adapter);
+
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, SAddr.getDistricts());
+        districtEditText.setAdapter(adapter2);
 
         if (FBUsers.getIsFB().contains("true")){
             donorNameEditText.setText(FBUsers.getName());
@@ -136,28 +148,30 @@ public class SingUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (donorNameEditText.getText().toString().isEmpty() && userNameEditText.getText().toString().isEmpty() &&
-                        passwordEditText.getText().toString().isEmpty() && mobileEditText.getText().toString().isEmpty() &&
-                        areaEditText.getText().toString().isEmpty() && thanaEditText.getText().toString().isEmpty() &&
-                        unionEditText.getText().toString().isEmpty() &&  districtEditText.getText().toString().isEmpty() &&
-                        ageEditText.getText().toString().isEmpty())
-                    new ShowDialog(SingUpActivity.this, "Error!!!", "Please Provide All Information", getResources().getDrawable(R.drawable.ic_error_red_24dp));
+                if (groupSpinner.getSelectedItemPosition()!=0) {
+                    if (donorNameEditText.getText().toString().isEmpty() && userNameEditText.getText().toString().isEmpty() &&
+                            passwordEditText.getText().toString().isEmpty() && mobileEditText.getText().toString().isEmpty() &&
+                            areaEditText.getText().toString().isEmpty() && thanaEditText.getText().toString().isEmpty() &&
+                            unionEditText.getText().toString().isEmpty() && districtEditText.getText().toString().isEmpty() &&
+                            ageEditText.getText().toString().isEmpty() && emailText.getText().toString().isEmpty())
+                        new ShowDialog(SingUpActivity.this, "Error!!!", "Please Provide All Information", getResources().getDrawable(R.drawable.ic_error_red_24dp));
 
-                else if (!cd.isConnected()) {
-                    showNetDisabledAlertToUser(SingUpActivity.this);
-                }else
-                doRegistration(donorNameEditText.getText().toString().trim(), userNameEditText.getText().toString().trim(),
-                        passwordEditText.getText().toString().trim(), mobileEditText.getText().toString().trim(),
-                        areaEditText.getText().toString().trim(),thanaEditText.getText().toString().trim(),
-                        unionEditText.getText().toString().trim(), districtEditText.getText().toString().trim(),
-                        ageEditText.getText().toString().trim(), String.valueOf(groupSpinner.getSelectedItem()), "user");
+                    else if (!cd.isConnected()) {
+                        showNetDisabledAlertToUser(SingUpActivity.this);
+                    } else
+                        doRegistration(donorNameEditText.getText().toString().trim(), userNameEditText.getText().toString().trim(),
+                                passwordEditText.getText().toString().trim(), mobileEditText.getText().toString().trim(),
+                                areaEditText.getText().toString().trim(), thanaEditText.getText().toString().trim(),
+                                unionEditText.getText().toString().trim(), districtEditText.getText().toString().trim(),
+                                ageEditText.getText().toString().trim(), String.valueOf(groupSpinner.getSelectedItem()), "user", emailText.getText().toString());
+                }
             }
         });
     }
 
     private void doRegistration(final String donor, final String userName, final String password, final String mobile,
                                 final String area, final String thana, final String union, final String district, final String age,
-                                final String bloodGroup, final String user_type) {
+                                final String bloodGroup, final String user_type, final String email) {
         pDialog.setMessage("Loading...");
         showDialog();
 
@@ -222,6 +236,7 @@ public class SingUpActivity extends AppCompatActivity {
                     params.put("age", age);
                     params.put("bloodg", bloodGroup);
                     params.put("image","null");
+                    params.put("email",email);
                 }else {
                     params.put("dname", FBUsers.getName());
                     params.put("username", FBUsers.getFirst_name());
@@ -235,6 +250,7 @@ public class SingUpActivity extends AppCompatActivity {
                     params.put("age", FBUsers.getAge_range());
                     params.put("bloodg", bloodGroup);
                     params.put("image",FBUsers.getImageLink());
+                    params.put("email",email);
                 }
                 return params;
             }

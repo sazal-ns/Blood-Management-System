@@ -72,4 +72,6 @@
     <!--facebook-->
     <string name="facebook_app_id">1218930124829482</string>
     <string name="fb_login_protocol_scheme">fb1218930124829482</string>
+
+    <string name="title">Search For Blood near your location</string>
 </resources>

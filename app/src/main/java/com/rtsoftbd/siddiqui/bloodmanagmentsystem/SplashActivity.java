@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ProgressBar;
 
 import com.android.volley.AuthFailureError;
@@ -44,7 +45,7 @@ public class SplashActivity extends AppCompatActivity  {
             @Override
             public void onResponse(String response) {
                 JSONObject jsonObject;
-
+                Log.i("data",response);
                 try {
                     jsonObject = new JSONObject(response);
 
