@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. By RTSoftBD.
+  ~ Author: Noor Nabiul Alam Siddiqui
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/menu_our_goal"
+            android:title="@string/ourGoal"/>
+        <item
+            android:id="@+id/menu_about_us"
+            android:title="@string/aboutUs"
+            />
+    </group>
+</menu>

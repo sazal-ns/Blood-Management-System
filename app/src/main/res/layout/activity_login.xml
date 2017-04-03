@@ -1,139 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rtsoftbd.siddiqui.bloodmanagmentsystem.LoginActivity"
-    android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar.Fullscreen"
-    android:background="@drawable/bg">
+    android:padding="18dp"
+    tools:context="com.rtsoftbd.siddiqui.bloodmanagmentsystem.LoginActivity">
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:srcCompat="@drawable/banner"
         android:id="@+id/imageView"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="25dp"
-        android:layout_centerHorizontal="true"
-        android:contentDescription="@string/app_name" />
+        android:contentDescription="@string/app_name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/usernameTextInputLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="@drawable/login_bg"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:gravity="center_horizontal"
-        android:id="@+id/ii">
+        android:layout_marginTop="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
 
-        <TextView
-            android:text="@string/login"
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="@string/userName"
+                android:ems="10"
+                android:id="@+id/userNameEditText"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/passwordTextInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameTextInputLayout">
+
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/singinTextView"
-            android:textAlignment="center"
-            android:textSize="25sp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="5dp"/>
-
-        <EditText
-            android:layout_width="@dimen/sing_in_layout_width"
-            android:layout_height="@dimen/sing_in_layout_height"
-            android:inputType="textPersonName"
-            android:hint="@string/userName"
-            android:textColorHint="@android:color/white"
-            android:ems="10"
-            android:id="@+id/userNameEditText"
-            android:textAlignment="center"
-            android:background="#6dc393"
-            android:layout_marginTop="5dp"/>
-
-        <EditText
-            android:layout_width="@dimen/sing_in_layout_width"
-            android:layout_height="@dimen/sing_in_layout_height"
             android:inputType="textPassword"
             android:ems="10"
-            android:id="@+id/passwordEditText"
             android:hint="@string/password"
-            android:textColorHint="@android:color/white"
-            android:textAlignment="center"
-            android:background="#6dc393"
-            android:layout_marginTop="3dp"/>
+            android:id="@+id/passwordEditText"/>
 
+    </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:text="@string/login"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/singInButton"
-            android:layout_marginTop="20dp"
-            android:textColor="#ffffff"
-            android:textSize="15sp"
-            android:background="@android:color/transparent"/>
-    </LinearLayout>
+          <Button
+              android:text="@string/login"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:id="@+id/singInButton"
+              android:textSize="20sp"
+              android:layout_marginTop="20dp"
+              app:layout_constraintLeft_toLeftOf="parent"
+              app:layout_constraintRight_toRightOf="parent"
+              app:layout_constraintTop_toBottomOf="@id/passwordTextInputLayout"/>
 
+      <TextView
+          android:text="Forget Password?"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/forget"
+          android:textSize="15sp"
+          android:textStyle="bold"
+          android:layout_marginTop="5dp"
+          android:textColor="@color/material_red_A700"
+          app:layout_constraintRight_toRightOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/singInButton"/>
 
-    <LinearLayout
-        android:id="@+id/ff"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ii"
-        android:gravity="center"
-        android:layout_marginTop="50dp">
+      <ImageView
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:src="@drawable/pw"
+          android:layout_marginBottom="20dp"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintRight_toRightOf="parent"
+          app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <TextView
-                android:text="@string/openAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/login_singup_textView"
-                android:textColor="@android:color/white"
-                android:textSize="15sp"/>
-
-            <Button
-                android:text="@string/singUp"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:id="@+id/singUpButton"
-                android:textSize="15sp"
-                android:background="@android:color/transparent"
-                android:textColor="#41b86c"
-                android:textAlignment="textStart"
-                tools:ignore="RtlCompat" />
-
-        </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ff"
-        android:gravity="center"
-        android:layout_marginTop="50dp">
-
-        <Button
-            android:text="Forget Password?"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/forget"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:textAlignment="textStart"
-            tools:ignore="RtlCompat" />
-
-    </LinearLayout>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/pw"
-        android:padding="5sp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

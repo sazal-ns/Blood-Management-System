@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -141,6 +143,29 @@ public class MainActivity extends AppCompatActivity {
         });
 
         preInIt();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.menu_our_goal) {
+            new MaterialDialog.Builder(MainActivity.this)
+                    .title("OUR GOAL")
+                    .customView(ourGoal(), true)
+                    .show();
+        }else if (id == R.id.menu_about_us){
+            showAboutUS();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void doRegistration(final String donor, final String userName, final String password, final String mobile,
@@ -372,7 +397,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private View ourGoal(){
+    public View ourGoal(){
         LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup view1 = (ViewGroup) inflater1.inflate(R.layout.our_goal, null, false);
 
@@ -380,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void showAboutUS(){
+    public void showAboutUS(){
                 boolean wrapInScrollView = true;
                 new MaterialDialog.Builder(this)
                                .title("About US")
