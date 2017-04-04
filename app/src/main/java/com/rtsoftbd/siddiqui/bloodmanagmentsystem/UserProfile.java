@@ -110,11 +110,11 @@ public class UserProfile extends AppCompatActivity {
         userNameEditText = (EditText) findViewById(R.id.userNameEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
         mobileEditText = (EditText) findViewById(R.id.mobileEditText);
-        areaEditText = (EditText) findViewById(R.id.areaEditText);
+       // areaEditText = (EditText) findViewById(R.id.areaEditText);
         thanaEditText = (EditText) findViewById(R.id.thanaEditText);
-        unionEditText = (EditText) findViewById(R.id.unionEditText);
+       // unionEditText = (EditText) findViewById(R.id.unionEditText);
         districtEditText = (EditText) findViewById(R.id.districtEditText);
-        ageEditText = (EditText) findViewById(R.id.ageEditText);
+       // ageEditText = (EditText) findViewById(R.id.ageEditText);
 
         userNameEditText.setFocusable(false);
         userNameEditText.setClickable(true);

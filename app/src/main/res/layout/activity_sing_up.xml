@@ -10,15 +10,14 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:padding="18dp"
     tools:context="com.rtsoftbd.siddiqui.bloodmanagmentsystem.SingUpActivity"
-    android:background="@color/material_indigo_700">
+    android:background="#E8FFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="30dp">
+        android:orientation="vertical">
 
         <TextView
             android:text="@string/singup"
@@ -28,8 +27,7 @@
             android:textAlignment="center"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="30sp"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp" />
+            android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -78,112 +76,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@android:color/white">
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="numberDecimal"
-                    android:hint="@string/age"
-                    android:ems="10"
-                    android:id="@+id/ageEditText"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/white">
                 <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="textPersonName"
-                    android:hint="@string/area"
-                    android:ems="10"
-                    android:id="@+id/areaEditText"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/white">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="textPersonName"
-                    android:hint="@string/union"
-                    android:ems="10"
-                    android:id="@+id/unionEditText"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1">
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white">
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="textPersonName"
-                    android:hint="@string/userName"
-                    android:ems="10"
-                    android:id="@+id/userNameEditText"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/white">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="textPassword"
-                    android:ems="10"
-                    android:id="@+id/passwordEditText"
-                    android:hint="@string/password"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/white">
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="textEmailAddress"
-                    android:hint="Email Address"
-                    android:id="@+id/emailEditText"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-
-
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/white">
-
-                <EditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textPersonName"
@@ -193,33 +86,31 @@
 
             </android.support.design.widget.TextInputLayout>
 
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="@android:color/white">
 
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="textPersonName"
-                    android:hint="@string/district"
-                    android:ems="10"
-                    android:id="@+id/districtEditText"/>
-
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPersonName"
+                android:hint="@string/district"
+                android:ems="10"
+                android:id="@+id/districtEditText"/>
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
     </LinearLayout>
 
-        <Spinner
+        <com.jaredrummler.materialspinner.MaterialSpinner
             android:layout_width="match_parent"
-            android:layout_height="@dimen/sing_in_layout_height"
+            android:layout_height="wrap_content"
             android:id="@+id/groupSpinner"
-            android:entries="@array/blood_group"
             android:layout_marginTop="10dp"
-            />
+            app:ms_text_color="@color/material_red_A700"
+            android:textSize="25sp" />
 
         <Button
             android:text="@string/singup"
@@ -229,7 +120,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:id="@+id/singUnButtonD"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"/>
 
     </LinearLayout>

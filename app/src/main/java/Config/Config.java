@@ -10,7 +10,7 @@ package config;
  */
 
 public final class Config {
-    private static String BASE_URL = "http://api.thebloodbank.tk/blood/";
+    private static String BASE_URL = "http://api.thebloodbank.tk/v2/blood/";
 
     public static String URL_LOGIN = BASE_URL.concat("login.php");
 

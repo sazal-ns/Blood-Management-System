@@ -35,7 +35,7 @@
     <string name="union">Union</string>
     <string name="district">District</string>
     <string name="age">Age</string>
-    <string name="singup">Become A Donor</string>
+    <string name="singup">Become A Proud Donor</string>
 
     <!--Profile-->
     <string name="updateInformation">Update Information</string>
@@ -63,7 +63,7 @@
     <string name="who">World Blood Donor Day (WHO) is celebrated on 14 June annually all around the world for safe blood and blood products awareness. It also encourages people to donate blood and save a life. Everyone has a life-saving gift which is Blood. Blood camps are held for people to voluntarily donate blood.</string>
     <string name="goal">SOME WORDS OF OUR GOAL</string>
     <string name="mission">Mission</string>
-    <string name="missionData">To perform a critical role in healthcare by providing a safe, secure and cost effective supply of quality blood products, essential services and leading edge research to meet the needs of patients.</string>
+    <string name="missionData">To perform a critical role in health care by providing a safe, secure and cost effective supply of quality blood products, essential services and leading edge research to meet the needs of patients.</string>
     <string name="vision">Vision</string>
     <string name="visionData">To improve the lives of patients through the power of humanity.</string>
     <string name="achievements">Achievements</string>
@@ -74,4 +74,8 @@
     <string name="fb_login_protocol_scheme">fb1218930124829482</string>
 
     <string name="title">Search For Blood near your location</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

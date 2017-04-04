@@ -145,28 +145,7 @@ public class MainActivity extends AppCompatActivity {
         preInIt();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_our_goal) {
-            new MaterialDialog.Builder(MainActivity.this)
-                    .title("OUR GOAL")
-                    .customView(ourGoal(), true)
-                    .show();
-        }else if (id == R.id.menu_about_us){
-            showAboutUS();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     private void doRegistration(final String donor, final String userName, final String password, final String mobile,
                                 final String area, final String thana, final String union, final String district, final String age,
@@ -387,6 +366,29 @@ public class MainActivity extends AppCompatActivity {
             showNetDisabledAlertToUser(this);
         }
         inIt();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.menu_our_goal) {
+            new MaterialDialog.Builder(this)
+                    .title("OUR GOAL")
+                    .customView(ourGoal(), true)
+                    .show();
+        }else if (id == R.id.menu_about_us){
+            showAboutUS();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private View about(){

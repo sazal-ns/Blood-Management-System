@@ -20,7 +20,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -35,6 +39,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,9 +58,8 @@ import models.User;
 
 public class SingUpActivity extends AppCompatActivity {
 
-    private EditText donorNameEditText,userNameEditText, passwordEditText, mobileEditText,  thanaEditText,unionEditText, emailText,
-            ageEditText;
-    private Spinner groupSpinner;
+    private EditText donorNameEditText, mobileEditText;
+    private MaterialSpinner groupSpinner;
     private Button singUpButtonD;
 
     private AutoCompleteTextView areaEditText, districtEditText;
@@ -87,23 +91,26 @@ public class SingUpActivity extends AppCompatActivity {
 
         preInIt();
     }
-
+    private String bloodGroup;
     private void preInIt() {
-
+bloodGroup="";
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
-        groupSpinner = (Spinner) findViewById(R.id.groupSpinner);
+        groupSpinner = (MaterialSpinner) findViewById(R.id.groupSpinner);
+        groupSpinner.setItems(getResources().getStringArray(R.array.blood_group));
+        groupSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                bloodGroup = item;
+            }
+        });
 
         donorNameEditText = (EditText) findViewById(R.id.donorNameEditText);
-        userNameEditText = (EditText) findViewById(R.id.userNameEditText);
-        passwordEditText = (EditText) findViewById(R.id.passwordEditText);
         mobileEditText = (EditText) findViewById(R.id.mobileEditText);
-        areaEditText = (AutoCompleteTextView) findViewById(R.id.areaEditText);
-        thanaEditText = (EditText) findViewById(R.id.thanaEditText);
-        unionEditText = (EditText) findViewById(R.id.unionEditText);
+
+        areaEditText = (AutoCompleteTextView) findViewById(R.id.thanaEditText);
         districtEditText = (AutoCompleteTextView) findViewById(R.id.districtEditText);
-        ageEditText = (EditText) findViewById(R.id.ageEditText);
-        emailText = (EditText) findViewById(R.id.emailEditText);
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, SAddr.getAreas());
         areaEditText.setAdapter(adapter);
@@ -113,9 +120,6 @@ public class SingUpActivity extends AppCompatActivity {
 
         if (FBUsers.getIsFB().contains("true")){
             donorNameEditText.setText(FBUsers.getName());
-            userNameEditText.setText(FBUsers.getFirst_name());
-            passwordEditText.setText(FBUsers.getId());
-            ageEditText.setText(FBUsers.getAge_range());
         }
 
         /*try {
@@ -148,30 +152,72 @@ public class SingUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (groupSpinner.getSelectedItemPosition()!=0) {
-                    if (donorNameEditText.getText().toString().isEmpty() && userNameEditText.getText().toString().isEmpty() &&
-                            passwordEditText.getText().toString().isEmpty() && mobileEditText.getText().toString().isEmpty() &&
-                            areaEditText.getText().toString().isEmpty() && thanaEditText.getText().toString().isEmpty() &&
-                            unionEditText.getText().toString().isEmpty() && districtEditText.getText().toString().isEmpty() &&
-                            ageEditText.getText().toString().isEmpty() && emailText.getText().toString().isEmpty())
+                if (bloodGroup.length()>0 && bloodGroup.length()<=3){
+                    if (donorNameEditText.getText().toString().isEmpty()  || mobileEditText.getText().toString().isEmpty() ||
+                            areaEditText.getText().toString().isEmpty() || districtEditText.getText().toString().isEmpty())
                         new ShowDialog(SingUpActivity.this, "Error!!!", "Please Provide All Information", getResources().getDrawable(R.drawable.ic_error_red_24dp));
 
                     else if (!cd.isConnected()) {
                         showNetDisabledAlertToUser(SingUpActivity.this);
                     } else
-                        doRegistration(donorNameEditText.getText().toString().trim(), userNameEditText.getText().toString().trim(),
-                                passwordEditText.getText().toString().trim(), mobileEditText.getText().toString().trim(),
-                                areaEditText.getText().toString().trim(), thanaEditText.getText().toString().trim(),
-                                unionEditText.getText().toString().trim(), districtEditText.getText().toString().trim(),
-                                ageEditText.getText().toString().trim(), String.valueOf(groupSpinner.getSelectedItem()), "user", emailText.getText().toString());
-                }
+                        doRegistration(donorNameEditText.getText().toString().trim(), mobileEditText.getText().toString().trim(),
+                                areaEditText.getText().toString().trim(), districtEditText.getText().toString().trim(),bloodGroup,"user");
+                }else new ShowDialog(SingUpActivity.this, "Warning","Please Select a Blood Group.",getResources().getDrawable(R.drawable.ic_warning_orange_24dp));
+
             }
         });
     }
 
-    private void doRegistration(final String donor, final String userName, final String password, final String mobile,
-                                final String area, final String thana, final String union, final String district, final String age,
-                                final String bloodGroup, final String user_type, final String email) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.menu_our_goal) {
+            new MaterialDialog.Builder(this)
+                    .title("OUR GOAL")
+                    .customView(ourGoal(), true)
+                    .show();
+        }else if (id == R.id.menu_about_us){
+            showAboutUS();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private View about(){
+        LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewGroup view1 = (ViewGroup) inflater1.inflate(R.layout.about_us, null, false);
+
+        return view1;
+
+    }
+
+    public View ourGoal(){
+        LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewGroup view1 = (ViewGroup) inflater1.inflate(R.layout.our_goal, null, false);
+
+        return view1;
+
+    }
+
+    public void showAboutUS(){
+        boolean wrapInScrollView = true;
+        new MaterialDialog.Builder(this)
+                .title("About US")
+                .customView(about(), wrapInScrollView)
+                .show();
+    }
+
+
+    private void doRegistration(final String donor, final String mobile, final String thana, final String district,
+                                final String bloodGroup, final String user_type) {
         pDialog.setMessage("Loading...");
         showDialog();
 
@@ -225,32 +271,20 @@ public class SingUpActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 if (FBUsers.getIsFB().contains("false")) {
                     params.put("dname", donor);
-                    params.put("username", userName);
-                    params.put("password", password);
                     params.put("user_type", user_type);
                     params.put("mobile", mobile);
-                    params.put("area", area);
+                    params.put("username", mobile);
                     params.put("thana", thana);
-                    params.put("union", union);
                     params.put("district", district);
-                    params.put("age", age);
                     params.put("bloodg", bloodGroup);
-                    params.put("image","null");
-                    params.put("email",email);
                 }else {
                     params.put("dname", FBUsers.getName());
-                    params.put("username", FBUsers.getFirst_name());
-                    params.put("password", FBUsers.getId());
                     params.put("user_type", user_type);
                     params.put("mobile", mobile);
-                    params.put("area", area);
                     params.put("thana", thana);
-                    params.put("union", union);
                     params.put("district", district);
-                    params.put("age", FBUsers.getAge_range());
                     params.put("bloodg", bloodGroup);
                     params.put("image",FBUsers.getImageLink());
-                    params.put("email",email);
                 }
                 return params;
             }
