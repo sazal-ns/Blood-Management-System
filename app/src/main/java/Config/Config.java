@@ -21,4 +21,6 @@ public final class Config {
     public static String URL_UPDATE_USER_INFO= BASE_URL.concat("updateUserInfo.php");
 
     public static String URL_LOC = BASE_URL.concat("location.php");
+
+    public static String URL_MORE_INFO = BASE_URL.concat("more.php");
 }

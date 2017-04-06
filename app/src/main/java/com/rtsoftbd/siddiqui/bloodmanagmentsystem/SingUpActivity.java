@@ -245,13 +245,15 @@ bloodGroup="";
                         User.setDistrict(object.getString("district"));
                         User.setAge(object.getString("age"));
                         User.setBloodg(object.getString("bloodg"));
-
-                        Intent intent = new Intent(SingUpActivity.this, UserProfile.class);
+                        hideDialog();
+                        Intent intent = new Intent(SingUpActivity.this, MoreActivity.class);
                         startActivity(intent);
                         finish();
 
                     }else{
                         hideDialog();
+                        Intent intent = new Intent(SingUpActivity.this, MoreActivity.class);
+                        startActivity(intent);
                         new ShowDialog(SingUpActivity.this, "Error", jsonObject.getString("error_msg"),getResources().getDrawable(R.drawable.ic_error_red_24dp));
                     }
                 } catch (JSONException e) {
