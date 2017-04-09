@@ -103,7 +103,7 @@ public class MoreActivity extends AppCompatActivity {
                         User.setAge(object.getString("age"));
                         User.setBloodg(object.getString("bloodg"));
 
-                        Intent intent = new Intent(MoreActivity.this, MoreActivity.class);
+                        Intent intent = new Intent(MoreActivity.this, ProfileActivity.class);
                         startActivity(intent);
                         finish();
 

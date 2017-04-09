@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -104,10 +105,54 @@ public class LoginActivity extends AppCompatActivity {
                     doLogin(userNameEditText.getText().toString().trim(), passwordEditText.getText().toString().trim());
                     break;
                 case R.id.forget:
+                    new MaterialDialog.Builder(LoginActivity.this)
+                            .title("Forget Password???")
+                            .content("Your email address")
+                            .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+                            .input("Email Address", null, new MaterialDialog.InputCallback() {
+                                @Override
+                                public void onInput(MaterialDialog dialog, CharSequence input) {
+                                    forgetPass(input.toString());
+                                }
+                            }).show();
+                    break;
 
             }
         }
     };
+
+    private void forgetPass(final String input) {
+        StringRequest request = new StringRequest(Request.Method.POST, Config.EMAIL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.i("Volley Response", response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("error").contentEquals("false"))
+                    new MaterialDialog.Builder(LoginActivity.this)
+                            .content(jsonObject.getString("server_respons"))
+                            .show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("contactEmail", input);
+
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(request);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
