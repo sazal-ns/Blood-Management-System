@@ -231,8 +231,9 @@ public class LoginActivity extends AppCompatActivity {
                         User.setDistrict(object.getString("district"));
                         User.setAge(object.getString("age"));
                         User.setBloodg(object.getString("bloodg"));
+                        User.setEmail(object.getString("email"));
 
-                        Intent intent = new Intent(LoginActivity.this, UserProfile.class);
+                        Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
                         startActivity(intent);
                         finish();
 

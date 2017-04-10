@@ -145,7 +145,7 @@ bloodGroup="";
             districtEditText.setText(User.getDistrict());*/
 
         TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        mobileEditText.setText(tMgr.getLine1Number());
+        //mobileEditText.setText(tMgr.getLine1Number());
 
         singUpButtonD = (Button) findViewById(R.id.singUnButtonD);
         singUpButtonD.setOnClickListener(new View.OnClickListener() {

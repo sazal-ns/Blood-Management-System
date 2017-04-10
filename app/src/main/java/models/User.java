@@ -10,9 +10,17 @@ package models;
  */
 
 public class User {
-    private static String id, dname, username, password, user_type, mobile, area, thana, union, district, age, bloodg, imageLink;
+    private static String id, dname, username, password, user_type, mobile, area, thana, union, district, age, bloodg, imageLink, email;
 
     public User() {
+    }
+
+    public static String getEmail() {
+        return email;
+    }
+
+    public static void setEmail(String email) {
+        User.email = email;
     }
 
     public static String getImageLink() {

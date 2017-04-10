@@ -6,9 +6,16 @@
 package com.rtsoftbd.siddiqui.bloodmanagmentsystem;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +29,13 @@ import com.afollestad.materialdialogs.MaterialDialog;
 public class ProfileActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
+    private FragmentManager fragmentManager;
+
+    Fragment profileFragment;
+    Fragment historyFragment;
+    Fragment settingsFragment;
+
+    FragmentTransaction fragmentTransaction;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -30,13 +44,16 @@ public class ProfileActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_history:
-                    mTextMessage.setText(R.string.title_history);
+                   fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.container, new HistoryFragment()).commit();
                     return true;
                 case R.id.navigation_profile:
-                    mTextMessage.setText(R.string.title_profile);
+                   fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.container, new ProfileFragment()).commit();
                     return true;
                 case R.id.navigation_settings:
-                    mTextMessage.setText(R.string.title_settings);
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.container, new SettingsFragment()).commit();
                     return true;
             }
             return false;
@@ -49,9 +66,19 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        fragmentManager = getSupportFragmentManager();
+
+        // define your fragments here
+         profileFragment = new ProfileFragment();
+       historyFragment = new HistoryFragment();
+        settingsFragment = new SettingsFragment();
+
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, profileFragment).commit();
     }
 
     @Override
@@ -73,7 +100,8 @@ public class ProfileActivity extends AppCompatActivity {
         }else if (id == R.id.menu_about_us){
             showAboutUS();
         }else if (id==R.id.menu_logout){
-
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

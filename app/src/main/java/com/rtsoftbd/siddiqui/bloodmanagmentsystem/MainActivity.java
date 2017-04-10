@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
                         User.setBloodg(object.getString("bloodg"));
                         User.setImageLink(object.getString("image"));
 
-                        Intent intent = new Intent(MainActivity.this, UserProfile.class);
+                        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                         startActivity(intent);
 
 

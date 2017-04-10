@@ -25,4 +25,6 @@ public final class Config {
     public static String URL_MORE_INFO = BASE_URL.concat("more.php");
 
     public static String  EMAIL = "http://thebloodbank.tk/et";
+
+    public static String UPDATEEP = BASE_URL.concat("updateEP.php");
 }

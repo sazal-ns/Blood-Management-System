@@ -1,0 +1,62 @@
+<!--
+  ~ Copyright (c) 2017. By RTSoftBD.
+  ~ Author: Noor Nabiul Alam Siddiqui
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    android:padding="18dp"
+    tools:context="com.rtsoftbd.siddiqui.bloodmanagmentsystem.HistoryFragment">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Did you recently donate blood?"
+            android:textStyle="bold|italic"
+            android:textSize="15sp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/addHistoryAppCompatButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="Add History"
+            android:textColor="@android:color/white"
+            android:background="@color/material_green_600"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/titleTextView"/>
+
+        <View
+            android:id="@+id/Hline"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="18dp"
+            android:background="@android:color/black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleTextView"/>
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Hline"/>
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

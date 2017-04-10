@@ -176,7 +176,7 @@ public class MoreActivity extends AppCompatActivity {
         if (!repetPassword.contentEquals(password)){
             repetPasswordEditText.setError("not match!!");
             valid = false;
-        }repetPasswordEditText.setError(null);
+        }else repetPasswordEditText.setError(null);
 
         if (email.isEmpty() || !email.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")) {
             emailEditText.setError("give valid email address");
