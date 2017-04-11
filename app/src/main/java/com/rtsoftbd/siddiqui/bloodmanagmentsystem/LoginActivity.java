@@ -232,6 +232,7 @@ public class LoginActivity extends AppCompatActivity {
                         User.setAge(object.getString("age"));
                         User.setBloodg(object.getString("bloodg"));
                         User.setEmail(object.getString("email"));
+                        User.setImageLink(object.getString("image"));
 
                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
                         startActivity(intent);

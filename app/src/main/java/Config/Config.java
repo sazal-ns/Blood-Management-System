@@ -27,4 +27,6 @@ public final class Config {
     public static String  EMAIL = "http://thebloodbank.tk/et";
 
     public static String UPDATEEP = BASE_URL.concat("updateEP.php");
+
+    public static String fbImg = BASE_URL.concat("fbImg.php");
 }

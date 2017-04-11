@@ -7,6 +7,7 @@ package com.rtsoftbd.siddiqui.bloodmanagmentsystem;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,8 +27,17 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
@@ -42,7 +52,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import config.Config;
+import helper.AppController;
 import helper.ShowDialog;
+import models.FBUsers;
 import models.SAddr;
 import models.User;
 
@@ -61,7 +73,7 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    @BindView(R.id.thumbnail) ImageView ms_Thumbnail;
+    @BindView(R.id.thumbnail) NetworkImageView ms_Thumbnail;
     @BindView(R.id.fb_login_button) LoginButton ms_FbLoginButton;
     @BindView(R.id.donorNameEditText) EditText ms_DonorNameEditText;
     @BindView(R.id.timeAgoTextView) TextView ms_TimeAgoTextView;
@@ -75,6 +87,9 @@ public class ProfileFragment extends Fragment {
     private String donorName, phone, thana, age, district, bloodGroup;
 
     private ProgressDialog progressDialog;
+
+    private ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+    private  CallbackManager callbackManager;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -120,22 +135,17 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, view);
+
+        callbackManager = CallbackManager.Factory.create();
+        ms_FbLoginButton.setFragment(this);
+        ms_FbLoginButton.setReadPermissions("public_profile", "email");
+
         final String[] blood = getResources().getStringArray(R.array.blood_group);
         ms_GroupSpinner.setItems(getResources().getStringArray(R.array.blood_group));
         ms_GroupSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
                 bloodGroup = item;
-            }
-        });
-
-        ms_GroupSpinner.setOnNothingSelectedListener(new MaterialSpinner.OnNothingSelectedListener() {
-            @Override
-            public void onNothingSelected(MaterialSpinner spinner) {
-                for (int i=0; i< blood.length; i++){
-                    if (blood[i].contentEquals(User.getBloodg()))
-                        ms_GroupSpinner.setSelectedIndex(i);
-                }
             }
         });
 
@@ -155,11 +165,42 @@ public class ProfileFragment extends Fragment {
             if (blood[i].contentEquals(User.getBloodg()))
             ms_GroupSpinner.setSelectedIndex(i);
         }
+        bloodGroup = User.getBloodg();
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Working...");
+        progressDialog.setMessage("Working....");
+
+        if (imageLoader == null)
+            imageLoader = AppController.getInstance().getImageLoader();
+
+        loadImage();
+
         return view;
+    }
+
+    private void loadImage() {
+        if (User.getImageLink().contentEquals("null")) {
+            if (User.getBloodg().contentEquals("A+"))
+                ms_Thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Apos.png", imageLoader);
+            else if (User.getBloodg().contentEquals("A-"))
+                ms_Thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Aneg.png", imageLoader);
+            else if (User.getBloodg().contentEquals("B+"))
+                ms_Thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Bpos.png", imageLoader);
+            else if (User.getBloodg().contentEquals("B-"))
+                ms_Thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Bneg.png", imageLoader);
+            else if (User.getBloodg().contentEquals("O+"))
+                ms_Thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Opos.png", imageLoader);
+            else if (User.getBloodg().contentEquals("O-"))
+                ms_Thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/Oneg.png", imageLoader);
+            else if (User.getBloodg().contentEquals("AB+"))
+                ms_Thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/ABpos.png", imageLoader);
+            else if (User.getBloodg().contentEquals("AB-"))
+                ms_Thumbnail.setImageUrl("http://api.rtsoftbd.us/blood/img/ABneg.png", imageLoader);
+        }else {
+            ms_Thumbnail.setImageUrl(User.getImageLink(), imageLoader);
+            ms_FbLoginButton.setVisibility(View.GONE);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -185,6 +226,7 @@ public class ProfileFragment extends Fragment {
     public void ms_OnClick(View view) {
         switch (view.getId()) {
             case R.id.fb_login_button:
+                getFbPic();
                 break;
             case R.id.updateButton:
                 getData();
@@ -192,22 +234,63 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void getData() {
-        donorName = ms_DonorNameEditText.getText().toString().trim();
-        phone = ms_PhoneEditText.getText().toString().trim();
-        age = ms_AgeEditText.getText().toString().trim();
-        thana = ms_ThanaAutoCompleteTextView.getText().toString().trim();
-        district = ms_DisAutoCompleteTextView.getText().toString().trim();
+    private void getFbPic() {
 
-        update();
+        ms_FbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+
+                                Log.e("response: ", response + "");
+                                Log.e("response object: ", object.toString() + "");
+                                try {
+                                    FBUsers.setId(object.getString("id"));
+                                    FBUsers.setEmail(object.getString("email"));
+                                    FBUsers.setName(object.getString("name"));
+                                    User.setImageLink("https://graph.facebook.com/"+object.getString("id")+"/picture?type=large");
+                                    FBUsers.setIsFB("true");
+                                    FBUsers.setFirst_name(object.getString("first_name"));
+                                    JSONObject jsonObject = object.getJSONObject("age_range");
+                                    FBUsers.setAge_range(jsonObject.getString("min"));
+                                    FBUsers.setIsFB("true");
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
+                                LoginManager.getInstance().logOut();
+                                ms_FbLoginButton.setVisibility(View.GONE);
+                                loadImage();
+                                updateImg();
+                            }
+
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,age_range,email,name,first_name");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("*****Cancel****","On cancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d("****Error****",error.toString());
+            }
+        });
+
     }
 
-    private void update() {
-        if (!valid()) return;
-
-        StringRequest request = new StringRequest(Request.Method.POST, Config.URL_UPDATE_USER_INFO, new Response.Listener<String>() {
+    private void updateImg() {
+        StringRequest request = new StringRequest(Request.Method.POST, Config.fbImg, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                progressDialog.dismiss();
                 JSONObject jsonObject;
                 try {
                     jsonObject = new JSONObject(response);
@@ -243,6 +326,7 @@ public class ProfileFragment extends Fragment {
                         new ShowDialog(getContext(), "Error", jsonObject.getString("error_msg"),getResources().getDrawable(R.drawable.ic_error_red_24dp));
                     }
                 } catch (JSONException e) {
+                    progressDialog.dismiss();
                     e.printStackTrace();
                 }
                 progressDialog.dismiss();
@@ -250,6 +334,94 @@ public class ProfileFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                error.printStackTrace();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("id",User.getId());
+                params.put("image",User.getImageLink());
+
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(getContext()).add(request);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode,resultCode,data);
+    }
+
+    private void getData() {
+        donorName = ms_DonorNameEditText.getText().toString().trim();
+        phone = ms_PhoneEditText.getText().toString().trim();
+        age = ms_AgeEditText.getText().toString().trim();
+        thana = ms_ThanaAutoCompleteTextView.getText().toString().trim();
+        district = ms_DisAutoCompleteTextView.getText().toString().trim();
+
+        update();
+    }
+
+    private void update() {
+        if (!valid()){
+
+            return;}
+        progressDialog.show();
+
+        StringRequest request = new StringRequest(Request.Method.POST, Config.URL_UPDATE_USER_INFO, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressDialog.dismiss();
+                JSONObject jsonObject;
+                try {
+                    jsonObject = new JSONObject(response);
+                    Log.e("response", response);
+
+                    if (jsonObject.toString().contains("false")){
+                        new MaterialDialog.Builder(getContext())
+                                .content("Successfully Update")
+                                .show();
+                        JSONObject object = new JSONObject(jsonObject.getString("user"));
+
+                        User.setId(object.getString("id"));
+                        User.setDname(object.getString("dname"));
+                        User.setUsername(object.getString("username"));
+                        User.setPassword(object.getString("password"));
+                        User.setUser_type(object.getString("user_type"));
+                        User.setMobile("0"+object.getString("mobile"));
+                        User.setArea(object.getString("area"));
+                        User.setThana(object.getString("thana"));
+                        User.setUnion(object.getString("union"));
+                        User.setDistrict(object.getString("district"));
+                        User.setAge(object.getString("age"));
+                        User.setBloodg(object.getString("bloodg"));
+                        User.setEmail(object.getString("email"));
+
+                        ms_DonorNameEditText.setText(User.getDname());
+                        ms_PhoneEditText.setText(User.getMobile());
+                        ms_AgeEditText.setText(User.getAge());
+                        ms_ThanaAutoCompleteTextView.setText(User.getThana());
+                        ms_DisAutoCompleteTextView.setText(User.getDistrict());
+
+                    }else{
+                        new ShowDialog(getContext(), "Error", jsonObject.getString("error_msg"),getResources().getDrawable(R.drawable.ic_error_red_24dp));
+                    }
+                } catch (JSONException e) {
+                    progressDialog.dismiss();
+                    e.printStackTrace();
+                }
+                progressDialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 error.printStackTrace();
             }
         }){
@@ -264,7 +436,10 @@ public class ProfileFragment extends Fragment {
                 params.put("district",district);
                 params.put("age",age);
                 params.put("bloodg",bloodGroup);
-                params.put("image",User.getImageLink());
+                if (User.getImageLink().isEmpty())
+                    params.put("image","");
+                else
+                    params.put("image",User.getImageLink());
                 return params;
             }
         };
@@ -294,7 +469,7 @@ public class ProfileFragment extends Fragment {
             valid = false;
         }else ms_AgeEditText.setError(null);
 
-        if (bloodGroup.length()>0 && bloodGroup.length()<=3){
+        if (bloodGroup.length()>4){
             new MaterialDialog.Builder(getContext())
                     .content("Select Blood Group")
                     .show();
@@ -312,6 +487,7 @@ public class ProfileFragment extends Fragment {
             valid = false;
             ms_DisAutoCompleteTextView.setError("provide district name");
         }else  ms_DisAutoCompleteTextView.setError(null);
+
 
         return valid;
     }
