@@ -64,7 +64,8 @@
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile" />
-        <activity android:name=".MoreActivity"></activity>
+        <activity android:name=".MoreActivity" />
+        <activity android:name=".AddHistoryActivity"></activity>
     </application>
 
 </manifest>

@@ -29,4 +29,12 @@ public final class Config {
     public static String UPDATEEP = BASE_URL.concat("updateEP.php");
 
     public static String fbImg = BASE_URL.concat("fbImg.php");
+
+    public static String HISTORYADD = BASE_URL.concat("addHistory.php");
+
+    public static String HOSPITAL_LIST = BASE_URL.concat("hospital.php");
+
+    public static String GETHISTORY = BASE_URL.concat("getHistory.php");
+
+    public static String DELETEHIS = BASE_URL.concat("deleteHis.php");
 }

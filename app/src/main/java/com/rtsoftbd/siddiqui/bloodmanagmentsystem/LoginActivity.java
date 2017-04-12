@@ -41,11 +41,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import config.Config;
 import helper.ConnectionDetect;
 import helper.ShowDialog;
+import models.History;
+import models.SAddr;
 import models.User;
 
 public class LoginActivity extends AppCompatActivity {
@@ -65,6 +68,8 @@ public class LoginActivity extends AppCompatActivity {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         cd = new ConnectionDetect(this);
+
+        SAddr.clearHistories();
 
         preInIt();
 
@@ -234,6 +239,7 @@ public class LoginActivity extends AppCompatActivity {
                         User.setEmail(object.getString("email"));
                         User.setImageLink(object.getString("image"));
 
+
                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
                         startActivity(intent);
                         finish();
@@ -268,6 +274,8 @@ public class LoginActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(request);
     }
+
+
 
     public void showNetDisabledAlertToUser(final Context context){
 

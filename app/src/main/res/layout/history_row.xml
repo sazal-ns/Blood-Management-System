@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. By RTSoftBD.
+  ~ Author: Noor Nabiul Alam Siddiqui
+  -->
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/dateHead"
+        android:layout_width="wrap_content"
+        android:text="Date of Donation:  "
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/dateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" 2017-04-11"
+        app:layout_constraintLeft_toRightOf="@+id/dateHead"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/headHospital"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hospital:  "
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateHead"/>
+
+        <TextView
+            android:id="@+id/hospitaTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Institute of Cancer Research &amp; Hospital"
+             app:layout_constraintLeft_toRightOf="@id/headHospital"
+            app:layout_constraintTop_toBottomOf="@id/dateTextView"
+            app:layout_constraintRight_toLeftOf="@+id/deleteImageButton"/>
+
+    <TextView
+        android:id="@+id/headQun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quantity of Blood:  "
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hospitaTextView"/>
+
+           <TextView
+               android:id="@+id/quanitityTextView"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:text="1 Bag"
+               app:layout_constraintLeft_toRightOf="@+id/headQun"
+               app:layout_constraintTop_toBottomOf="@id/hospitaTextView"/>
+
+
+    <ImageView
+        android:id="@+id/deleteImageButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:focusable="false"
+        android:clickable="false"
+        android:src="@drawable/ic_delete_forever_red_a700_24dp"
+        android:background="@drawable/md_transparent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</android.support.constraint.ConstraintLayout>

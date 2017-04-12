@@ -8,8 +8,10 @@ package com.rtsoftbd.siddiqui.bloodmanagmentsystem;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
@@ -22,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -44,9 +47,17 @@ import com.jaredrummler.materialspinner.MaterialSpinner;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+import javax.xml.datatype.Duration;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +66,7 @@ import config.Config;
 import helper.AppController;
 import helper.ShowDialog;
 import models.FBUsers;
+import models.History;
 import models.SAddr;
 import models.User;
 
@@ -176,7 +188,145 @@ public class ProfileFragment extends Fragment {
 
         loadImage();
 
+        SAddr.clearHistories();
+        loadHistory();
+
+
         return view;
+    }
+
+    private void loadHistory() {
+        StringRequest request = new StringRequest(Request.Method.POST, Config.GETHISTORY, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                JSONObject jsonObject;
+                Log.i("data",response);
+                try {
+                    jsonObject = new JSONObject(response);
+
+                    if (jsonObject.toString().contains("false")){
+
+                        Iterator keys = jsonObject.keys();
+                        while (keys.hasNext()) {
+                            String dynamicKey = (String) keys.next();
+
+                            if (!dynamicKey.contains("error")) {
+                                JSONObject object = jsonObject.getJSONObject(dynamicKey);
+                                Log.e("Donor List", object.toString());
+
+                                History history = new History();
+                                history.setHospital(object.getString("hospital"));
+                                history.setDate(object.getString("date"));
+                                history.setId(object.getString("id"));
+                                history.setQun(String.valueOf(object.getInt("quantity")));
+                                history.setUserId(String.valueOf(object.getInt("userId")));
+
+                                SAddr.setHistories(history);
+
+                            }
+                        }
+
+                        if (SAddr.getHistories().size()>0) {
+                            History history = SAddr.getHistories().get(SAddr.getHistories().size() - 1);
+                            Calendar calendar = Calendar.getInstance();
+                            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                            String formattedDate = df.format(calendar.getTime());
+                            String d = get_count_of_days(history.getDate(), history.getDate());
+
+                            ms_TimeAgoTextView.setText("Gives Blood " + d + " ago");
+                        }else ms_TimeAgoTextView.setText("Give Blood to save life");
+                    }
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                /*if (error.toString().contains("NoConnectionError")) {
+                    new AlertDialog.Builder(SplashActivity.this)
+                            .setTitle("Error")
+                            .setMessage("No Active Internet Connection :(")
+                            .show();
+                }*/
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("bloodg", User.getId());
+
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(getContext()).add(request);
+    }
+
+
+    public String get_count_of_days(String Created_date_String, String Expire_date_String) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+Log.d(Created_date_String, Expire_date_String);
+        Date Created_convertedDate = null, Expire_CovertedDate = null, todayWithZeroTime = null;
+        try {
+            Created_convertedDate = dateFormat.parse(Created_date_String);
+            Expire_CovertedDate = dateFormat.parse(Expire_date_String);
+
+            Date today = new Date();
+
+            todayWithZeroTime = dateFormat.parse(dateFormat.format(today));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        int c_year = 0, c_month = 0, c_day = 0;
+
+        if (Created_convertedDate.after(todayWithZeroTime)) {
+            Calendar c_cal = Calendar.getInstance();
+            c_cal.setTime(Created_convertedDate);
+            c_year = c_cal.get(Calendar.YEAR);
+            c_month = c_cal.get(Calendar.MONTH);
+            c_day = c_cal.get(Calendar.DAY_OF_MONTH);
+
+        } else {
+            Calendar c_cal = Calendar.getInstance();
+            c_cal.setTime(todayWithZeroTime);
+            c_year = c_cal.get(Calendar.YEAR);
+            c_month = c_cal.get(Calendar.MONTH);
+            c_day = c_cal.get(Calendar.DAY_OF_MONTH);
+        }
+
+
+    /*Calendar today_cal = Calendar.getInstance();
+    int today_year = today_cal.get(Calendar.YEAR);
+    int today = today_cal.get(Calendar.MONTH);
+    int today_day = today_cal.get(Calendar.DAY_OF_MONTH);
+    */
+
+        Calendar e_cal = Calendar.getInstance();
+        e_cal.setTime(Expire_CovertedDate);
+
+        int e_year = e_cal.get(Calendar.YEAR);
+        int e_month = e_cal.get(Calendar.MONTH);
+        int e_day = e_cal.get(Calendar.DAY_OF_MONTH);
+
+        Calendar date1 = Calendar.getInstance();
+        Calendar date2 = Calendar.getInstance();
+
+        date1.clear();
+        date1.set(c_year, c_month, c_day);
+        date2.clear();
+        date2.set(e_year, e_month, e_day);
+
+        long diff = date2.getTimeInMillis() - date1.getTimeInMillis();
+
+        float dayCount = (float) diff / (24 * 60 * 60 * 1000);
+
+        return ("" + (int) Math.abs(dayCount) + " Days");
     }
 
     private void loadImage() {

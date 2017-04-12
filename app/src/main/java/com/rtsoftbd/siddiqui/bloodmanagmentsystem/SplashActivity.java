@@ -60,7 +60,7 @@ public class SplashActivity extends AppCompatActivity  {
                                // Log.e("Donor List", object.toString());
 
                                try {
-                                   SAddr.setAreas(object.getString("area"));
+                                   SAddr.setHospital(object.getString("hospital"));
                                }catch (Exception e ){
                                    e.printStackTrace();
                                }
